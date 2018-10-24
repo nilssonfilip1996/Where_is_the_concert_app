@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
+    private CityNameRetriever cityNameRetriever;
     private TextView tvLocation, tvCity;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -43,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         }*/
         tvLocation = findViewById(R.id.tvLocation);
         tvCity = findViewById(R.id.tvCurrentCity);
-
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -52,20 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 double latitude = location.getLatitude();
                 tvLocation.setText("Longitude: " + longitude + "\n" + "Latitude: " + latitude);
                 Log.d("Location", location.toString());
-                Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-                List<Address> addresses = null;
-                try {
-                    addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                    //String cityName = addresses.get(0).getAddressLine(0);
-                    String cityName = addresses.get(0).getLocality();
-                    String stateName = addresses.get(0).getAddressLine(1);
-                    String countryName = addresses.get(0).getAddressLine(2);
-                    Log.d(TAG, "onLocationChanged: full address: " + addresses.get(0).getAddressLine(0));
-                    tvCity.setText(cityName);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+                cityNameRetriever = new CityNameRetriever();
+                cityNameRetriever.execute(location);
             }
 
             @Override
@@ -141,4 +131,27 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    private class CityNameRetriever extends AsyncTask<Location,Void,String>{
+        @Override
+        protected String doInBackground(Location... locations) {
+            Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+            List<Address> addresses = null;
+            String cityName = "";
+            try {
+                addresses = geocoder.getFromLocation(locations[0].getLatitude(), locations[0].getLongitude(), 1);
+                cityName = addresses.get(0).getLocality();
+                Log.d(TAG, "onLocationChanged: full address: " + addresses.get(0).getAddressLine(0));
+            } catch (IOException e) {
+                Log.d(TAG, "doInBackground: ERROR couldn't retrieve city:");
+                e.printStackTrace();
+            }
+            return cityName;
+        }
+        @Override
+        protected void onPostExecute(String cityName) {
+            MainActivity.this.runOnUiThread(()-> tvCity.setText(cityName));
+        }
+    }
+
 }
