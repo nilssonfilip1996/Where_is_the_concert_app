@@ -31,6 +31,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
+
         LatLng random = new LatLng(55.60587, 13.00073);
         addMarker(random,  "Malmo");
         random = new LatLng(57.708870, 11.974560);
