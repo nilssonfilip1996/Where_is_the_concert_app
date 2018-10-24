@@ -3,37 +3,53 @@ package com.example.nilss.whenistheconcert;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DialogTitle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tv;
+    private TextView tvCordinates, tvCity;
     LocationManager locationManager;
     LocationListener locationListener;
+    double longitude;
+    double latitude;
+    private static final String TAG = "MainActivity";
+    List<Address> addresses;
+    Geocoder geocoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tv = findViewById(R.id.tvLocation);
-
+        tvCordinates = findViewById(R.id.tvLocation);
+        geocoder = new Geocoder(this, Locale.getDefault());
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                double longitude = location.getLongitude();
-                double latitude = location.getLatitude();
-                tv.setText("Longitude: " + longitude + "\n" + "Latitude: " + latitude);
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                tvCordinates.setText("Longitude: " + longitude + "\n" + "Latitude: " + latitude);
+                cityLocation(latitude, longitude);
                 Log.d("Location", location.toString());
+
 
             }
 
@@ -54,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         };
 
 
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -69,12 +84,15 @@ public class MainActivity extends AppCompatActivity {
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
-
         } else {
+
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             // Needed for update when application is started again.
+
+
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -86,4 +104,26 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    public void cityLocation(double latitude, double longitude) {
+
+        Log.d(TAG, "CORDINATES " + latitude + " ++++++++ " + longitude);
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses.size() > 0) {
+                String country = addresses.get(0).getCountryName();
+                String city = addresses.get(0).getAdminArea();
+                tvCordinates.setText("Counry: " + country + "\n" + "City: " + city);
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d(TAG, "COORDINATES: " + latitude + "---" + longitude);
+            Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }
