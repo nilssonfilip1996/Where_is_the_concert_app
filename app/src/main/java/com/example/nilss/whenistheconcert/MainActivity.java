@@ -97,11 +97,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Not sure what the deal with google play services is.
      * All I know is that it is mandatory in order to use google maps.
      * This is just a simple check to see if the device can run google maps
+     *
      * @return
      */
     public boolean isServiceOk() {
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class CityNameRetriever extends AsyncTask<Location,Void,String>{
+    private class CityNameRetriever extends AsyncTask<Location, Void, String> {
         @Override
         protected String doInBackground(Location... locations) {
             Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
@@ -148,9 +148,10 @@ public class MainActivity extends AppCompatActivity {
             }
             return cityName;
         }
+
         @Override
         protected void onPostExecute(String cityName) {
-            MainActivity.this.runOnUiThread(()-> tvCity.setText(cityName));
+            MainActivity.this.runOnUiThread(() -> tvCity.setText(cityName));
         }
     }
 
