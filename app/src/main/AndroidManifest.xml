@@ -11,6 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!--Line directly under is a fix for certain emulators using google maps.-->
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCXAkNNdnycdYV3taFnK5OlSIfv6_iWtCE" />
