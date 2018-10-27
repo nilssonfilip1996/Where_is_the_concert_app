@@ -161,13 +161,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class CityNameRetriever extends AsyncTask<Location, Void, com.example.nilss.whenistheconcert.Wrapper> {
+    private class CityNameRetriever extends AsyncTask<Location, Void, Wrapper> {
         @Override
-        protected com.example.nilss.whenistheconcert.Wrapper doInBackground(Location... locations) {
+        protected Wrapper doInBackground(Location... locations) {
             Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
             List<Address> addresses = null;
             String cityName = "";
-            com.example.nilss.whenistheconcert.Wrapper wrapper = null;
+            Wrapper wrapper = null;
             try {
                 addresses = geocoder.getFromLocation(locations[0].getLatitude(), locations[0].getLongitude(), 1);
                 cityName = addresses.get(0).getLocality();
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }
-                wrapper = new com.example.nilss.whenistheconcert.Wrapper();
+                wrapper = new Wrapper();
                 wrapper.cityName = cityName;
                 wrapper.latlng = latlng;
 
@@ -193,10 +193,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(com.example.nilss.whenistheconcert.Wrapper wrapper) {
+        protected void onPostExecute(Wrapper wrapper) {
             String cityName = wrapper.cityName;
             LatLng latLog = wrapper.latlng.get(0);
-            Log.d("", "WRAPPER: " + latLog);
+            Log.d(TAG, "WRAPPER: " + latLog);
             MainActivity.this.runOnUiThread(() -> tvCity.setText(cityName));
             Log.d(TAG, "CityName: " + cityName);
             initBtn(latLog);
