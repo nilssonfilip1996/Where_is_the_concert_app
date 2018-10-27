@@ -1,6 +1,7 @@
 package com.example.nilss.whenistheconcert;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -29,6 +30,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
+    //tester
 
     private CityNameRetriever cityNameRetriever;
     private TextView tvLocation, tvCity;
@@ -40,10 +42,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Start mapactivity if google play services is ok!
-/*        if(isServiceOk()) {
+        if(isServiceOk()) {
             Intent intent = new Intent(MainActivity.this, MapActivity.class);
             startActivity(intent);
-        }*/
+        }
         tvLocation = findViewById(R.id.tvLocation);
         tvCity = findViewById(R.id.tvCurrentCity);
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return
      */
-    public boolean isServiceOk() {
+    private boolean isServiceOk() {
         Log.d(TAG, "isServiceOk: checking google service version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainActivity.this);
