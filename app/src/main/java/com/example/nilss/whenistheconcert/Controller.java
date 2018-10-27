@@ -1,6 +1,7 @@
 package com.example.nilss.whenistheconcert;
 
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -9,6 +10,7 @@ public class Controller {
     private MapActivity mapActivity;
     private LatLng userLatlng;
     private String dateIntervalSearch;
+    private static final String TAG = "Controller";
 
 
 
@@ -19,6 +21,7 @@ public class Controller {
     public void searchForEventsPressed(LatLng latLng, String dateInterval){
         this.userLatlng = latLng;
         this.dateIntervalSearch = dateInterval;
+        Log.d(TAG, "Wrapper" + latLng + "------" + dateInterval);
         Intent intent = new Intent(mainActivity, MapActivity.class);
         mainActivity.startActivity(intent);
 

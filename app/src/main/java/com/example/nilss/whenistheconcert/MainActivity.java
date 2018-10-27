@@ -16,48 +16,61 @@ import android.app.Dialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nilss.whenistheconcert.Wrapper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
+    private Controller controller = new Controller(this);
     //tester
 
     private CityNameRetriever cityNameRetriever;
-    private TextView tvLocation, tvCity;
+    private EditText tvLocation, tvCity;
     LocationManager locationManager;
     LocationListener locationListener;
+    private Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Start mapactivity if google play services is ok!
-        if(isServiceOk()) {
+        if (isServiceOk()) {
             Intent intent = new Intent(MainActivity.this, MapActivity.class);
             startActivity(intent);
         }
-        tvLocation = findViewById(R.id.tvLocation);
+        btn = findViewById(R.id.findButton);
+        //  tvLocation = findViewById(R.id.tvLocation);
         tvCity = findViewById(R.id.tvCurrentCity);
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+
+
         locationListener = new LocationListener() {
+
             @Override
             public void onLocationChanged(Location location) {
                 double longitude = location.getLongitude();
                 double latitude = location.getLatitude();
-                tvLocation.setText("Longitude: " + longitude + "\n" + "Latitude: " + latitude);
+//                tvLocation.setText("Longitude: " + longitude + "\n" + "Latitude: " + latitude);
                 Log.d("Location", location.toString());
                 cityNameRetriever = new CityNameRetriever();
                 cityNameRetriever.execute(location);
+//                Log.d(TAG, "tvLOCATION: " + tvLocation.getText());
+
             }
 
             @Override
@@ -99,6 +112,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void initBtn(LatLng latLog) {
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String date = "2018-02-23";            // Temporary DateString untill i've implemented dateSelection
+                controller.searchForEventsPressed(latLog, date);
+
+            }
+        });
+
+    }
+
+
     /**
      * Not sure what the deal with google play services is.
      * All I know is that it is mandatory in order to use google maps.
@@ -134,27 +161,49 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class CityNameRetriever extends AsyncTask<Location, Void, String> {
+    private class CityNameRetriever extends AsyncTask<Location, Void, com.example.nilss.whenistheconcert.Wrapper> {
         @Override
-        protected String doInBackground(Location... locations) {
+        protected com.example.nilss.whenistheconcert.Wrapper doInBackground(Location... locations) {
             Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
             List<Address> addresses = null;
             String cityName = "";
+            com.example.nilss.whenistheconcert.Wrapper wrapper = null;
             try {
                 addresses = geocoder.getFromLocation(locations[0].getLatitude(), locations[0].getLongitude(), 1);
                 cityName = addresses.get(0).getLocality();
                 Log.d(TAG, "onLocationChanged: full address: " + addresses.get(0).getAddressLine(0));
+
+                ArrayList<LatLng> latlng = new ArrayList<LatLng>(addresses.size());
+                for (Address a : addresses) {
+                    if (a.hasLatitude() && a.hasLongitude()) {
+                        latlng.add(new LatLng(a.getLatitude(), a.getLongitude()));
+
+                    }
+                }
+                wrapper = new com.example.nilss.whenistheconcert.Wrapper();
+                wrapper.cityName = cityName;
+                wrapper.latlng = latlng;
+
+
             } catch (IOException e) {
                 Log.d(TAG, "doInBackground: ERROR couldn't retrieve city:");
                 e.printStackTrace();
             }
-            return cityName;
+            return wrapper;
         }
 
         @Override
-        protected void onPostExecute(String cityName) {
+        protected void onPostExecute(com.example.nilss.whenistheconcert.Wrapper wrapper) {
+            String cityName = wrapper.cityName;
+            LatLng latLog = wrapper.latlng.get(0);
+            Log.d("", "WRAPPER: " + latLog);
             MainActivity.this.runOnUiThread(() -> tvCity.setText(cityName));
+            Log.d(TAG, "CityName: " + cityName);
+            initBtn(latLog);
+
         }
+
+
     }
 
 }
