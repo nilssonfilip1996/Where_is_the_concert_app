@@ -18,10 +18,10 @@ public class Controller {
         this.mainActivity = mainActivity;
     }
 
-    public void searchForEventsPressed(LatLng latLng, String dateInterval){
+    public void searchForEventsPressed(LatLng latLng, String startDate, String endDate){
         this.userLatlng = latLng;
-        this.dateIntervalSearch = dateInterval;
-        Log.d(TAG, "Wrapper" + latLng + "------" + dateInterval);
+       // this.dateIntervalSearch = dateInterval;
+        Log.d(TAG, "Wrapper" + latLng + "------" + "StartDate: " + startDate + "-----" + "EndDate: " + endDate);
         Intent intent = new Intent(mainActivity, MapActivity.class);
         mainActivity.startActivity(intent);
 
