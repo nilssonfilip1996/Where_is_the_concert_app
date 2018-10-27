@@ -8,30 +8,53 @@
 
     <EditText
         android:id="@+id/tvCurrentCity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_width="211dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="81dp"
         android:layout_marginTop="54dp"
-        android:layout_marginEnd="136dp"
-        android:layout_marginBottom="210dp"
+        android:layout_marginEnd="92dp"
         android:text="Hello Github!"
-        app:layout_constraintBottom_toTopOf="@+id/findButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/findButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="183dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="101dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="134dp"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startDate" />
+
+    <TextView
+        android:id="@+id/startDate"
+        android:layout_width="122dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="139dp"
+        android:layout_marginEnd="32dp"
+        android:text="Select start date"
+        app:layout_constraintEnd_toStartOf="@+id/endDate"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCurrentCity" />
+
+    <TextView
+        android:id="@+id/endDate"
+        android:layout_width="122dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="139dp"
+        android:layout_marginEnd="56dp"
+        android:text="Select end date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/startDate"
         app:layout_constraintTop_toBottomOf="@+id/tvCurrentCity" />
 
 </android.support.constraint.ConstraintLayout>

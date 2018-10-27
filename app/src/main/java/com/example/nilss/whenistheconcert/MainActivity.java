@@ -1,8 +1,11 @@
 package com.example.nilss.whenistheconcert;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -18,6 +21,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +31,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,10 +43,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private Controller controller = new Controller(this);
+    private DatePickerDialog.OnDateSetListener startDateListener;
+    private DatePickerDialog.OnDateSetListener endDateListener;
     //tester
 
     private CityNameRetriever cityNameRetriever;
     private EditText tvLocation, tvCity;
+    private TextView tvStartDate, tvEndDate;
     LocationManager locationManager;
     LocationListener locationListener;
     private Button btn;
@@ -53,9 +63,10 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, MapActivity.class);
             startActivity(intent);
         }
-        btn = findViewById(R.id.findButton);
-        //  tvLocation = findViewById(R.id.tvLocation);
-        tvCity = findViewById(R.id.tvCurrentCity);
+        initComp();
+        initStartDateClickListener();
+        initEndDateClickListener();
+
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 
 
@@ -112,13 +123,139 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /*
+        OnCreate ENDS here!
+        ------------------
+     */
+
+
+    private void initComp() {
+        btn = findViewById(R.id.findButton);
+        //  tvLocation = findViewById(R.id.tvLocation);
+        tvCity = findViewById(R.id.tvCurrentCity);
+        tvStartDate = findViewById(R.id.startDate);
+        tvEndDate = findViewById(R.id.endDate);
+
+
+    }
+
+
+    private void initStartDateClickListener() {
+
+        this.tvStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog_MinWidth, startDateListener, year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
+                dialog.show();
+            }
+        });
+
+        startDateListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                String fmonth, fday;
+                int intMonth;
+                if (month < 10 && day < 10) {
+                    fmonth = "0" + month;
+                    fday = "0" + day;
+                    intMonth = Integer.parseInt(fmonth) + 1;
+                    String paddedMonth = String.format("%02d", intMonth);
+                    String date = year + "-" + paddedMonth + "-" + fday;
+                    tvStartDate.setText(date);
+                } else if (day < 10) {
+
+                    fday = "0" + day;
+                    month = month + 1;
+                    String date = year + "-" + month + "-" + fday;
+                    tvStartDate.setText(date);
+
+                } else if (month < 10) {
+
+                    fmonth = "0" + month;
+                    intMonth = Integer.parseInt(fmonth) + 1;
+                    String paddedMonth = String.format("%02d", intMonth);
+                    String date = year + "-" + paddedMonth + "-" + day;
+                    tvStartDate.setText(date);
+                } else {
+
+                    month = month + 1;
+                    String date = year + "-" + month + "-" + day;
+                    tvStartDate.setText(date);
+
+
+                }
+            }
+        };
+    }
+
+    private void initEndDateClickListener() {
+
+        this.tvEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog_MinWidth, endDateListener, year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
+                dialog.show();
+            }
+        });
+
+        endDateListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                String fmonth, fday;
+                int intMonth;
+                if (month < 10 && day < 10) {
+                    fmonth = "0" + month;
+                    fday = "0" + day;
+                    intMonth = Integer.parseInt(fmonth) + 1;
+                    String paddedMonth = String.format("%02d", intMonth);
+                    String date = year + "-" + paddedMonth + "-" + fday;
+                    tvEndDate.setText(date);
+                } else if (day < 10) {
+
+                    fday = "0" + day;
+                    month = month + 1;
+                    String date = year + "-" + month + "-" + fday;
+                    tvEndDate.setText(date);
+
+                } else if (month < 10) {
+
+                    fmonth = "0" + month;
+                    intMonth = Integer.parseInt(fmonth) + 1;
+                    String paddedMonth = String.format("%02d", intMonth);
+                    String date = year + "-" + paddedMonth + "-" + day;
+                    tvEndDate.setText(date);
+                } else {
+
+                    month = month + 1;
+                    String date = year + "-" + month + "-" + day;
+                    tvEndDate.setText(date);
+
+
+                }
+            }
+        };
+    }
+
     private void initBtn(LatLng latLog) {
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String date = "2018-02-23";            // Temporary DateString untill i've implemented dateSelection
-                controller.searchForEventsPressed(latLog, date);
+                String startDate = tvStartDate.getText().toString();
+                String endDate = tvEndDate.getText().toString();
+                controller.searchForEventsPressed(latLog, startDate, endDate);
 
             }
         });
@@ -196,6 +333,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(com.example.nilss.whenistheconcert.Wrapper wrapper) {
             String cityName = wrapper.cityName;
             LatLng latLog = wrapper.latlng.get(0);
+
             Log.d("", "WRAPPER: " + latLog);
             MainActivity.this.runOnUiThread(() -> tvCity.setText(cityName));
             Log.d(TAG, "CityName: " + cityName);
