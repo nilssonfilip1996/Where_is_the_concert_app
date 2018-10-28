@@ -16,22 +16,25 @@ public class Controller {
     private LatLng userLatlng;
     private String dateIntervalSearch;
     private static final String TAG = "Controller";
-    private TicketMasterHandler tmHandler;
 
 
 
     public Controller(MainActivity mainActivity){
         this.mainActivity = mainActivity;
-        tmHandler = new TicketMasterHandler(this);
     }
 
     public void searchForEventsPressed(LatLng latLng, String cityName, String startDate, String endDate){
         this.userLatlng = latLng;
        // this.dateIntervalSearch = dateInterval;
         Log.d(TAG, "Wrapper" + latLng + "------" + "StartDate: " + startDate + "-----" + "EndDate: " + endDate);
-        tmHandler.requestAllEvents(cityName,startDate,endDate);
-       /* Intent intent = new Intent(mainActivity, MapActivity.class);
-        mainActivity.startActivity(intent);*/
+        //tmHandler.requestAllEvents(cityName,startDate,endDate);
+        Intent intent = new Intent(mainActivity, MapActivity.class);
+        intent.putExtra("latitude", String.valueOf(latLng.latitude));
+        intent.putExtra("longitude", String.valueOf(latLng.longitude));
+        intent.putExtra("city", cityName);
+        intent.putExtra("startDate", startDate);
+        intent.putExtra("endDate", endDate);
+        mainActivity.startActivity(intent);
 
 
 

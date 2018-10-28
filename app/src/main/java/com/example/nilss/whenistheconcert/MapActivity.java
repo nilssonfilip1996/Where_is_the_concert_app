@@ -18,16 +18,26 @@ import java.util.ArrayList;
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback{
     private static final String TAG = "MapActivity";
     private GoogleMap mMap;
-    private ArrayList<SimpleEvent> test;
+    private String cityName;
+    private LatLng userLocation;
+    private String startDate;
+    private String endDate;
+    private ArrayList<SimpleEvent> eventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        Bundle bundle = getIntent().getExtras();
-        if(bundle!=null) {
-            test = (ArrayList<SimpleEvent>) bundle.getSerializable("key");
-        }
+        Intent intent = getIntent();
+        double latitude = Double.valueOf(intent.getStringExtra("latitude"));
+        double longitude = Double.valueOf(intent.getStringExtra("longitude"));
+        this.userLocation = new LatLng(latitude,longitude);
+        this.cityName = intent.getStringExtra("city");
+        this.startDate = intent.getStringExtra("startDate");
+        this.endDate = intent.getStringExtra("endDate");
+        Log.d(TAG, "onCreate: city: " + cityName);
+        Log.d(TAG, "onCreate: startDate: " + startDate);
+        Log.d(TAG, "onCreate: endDate: " + endDate);
         initMap();
     }
 
@@ -40,9 +50,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
-        for (int i = 0; i < test.size(); i++) {
-            addMarker(test.get(i).getLatLng(),test.get(i).getName());
-        }
+        TicketMasterHandler tmHandler = new TicketMasterHandler();
+        tmHandler.requestAllEvents(MapActivity.this,cityName,startDate,endDate);
+
         /*LatLng random = new LatLng(55.60587, 13.00073);
         addMarker(random,  "Malmo");
         random = new LatLng(57.708870, 11.974560);

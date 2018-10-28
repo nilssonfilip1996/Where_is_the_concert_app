@@ -31,11 +31,6 @@ public class TicketMasterHandler {
     private static final String LOCATION_KEY = "location";
     private static final String LATITUDE_KEY = "latitude";
     private static final String LONGITUDE_KEY = "longitude";
-    private Controller controller;
-
-    public TicketMasterHandler(Controller controller) {
-        this.controller = controller;
-    }
 
 
     /**
@@ -44,7 +39,7 @@ public class TicketMasterHandler {
      * @param dateFrom, from?
      * @param dateTo, to?
      */
-    public void requestAllEvents(String cityName, String dateFrom, String dateTo){
+    public void requestAllEvents(MapActivity mapActivity, String cityName, String dateFrom, String dateTo){
         //String URL = rootURL + "events.json?" + "classificationName=music"+ "&city=" + cityName + "&apikey="+ tmAPIKey;
         String dateCriteria = "startDateTime="+dateFrom+"T00:00:00Z&endDateTime=" + dateTo + "T00:00:00Z";
         String URL = rootURL + "events.json?" + dateCriteria + "&city=" + cityName + "&size=199" + "&apikey="+ tmAPIKey;
@@ -65,15 +60,15 @@ public class TicketMasterHandler {
                         e.printStackTrace();
                     }
                 }
-                //Run on ui thread here. notify controller that new events have been found.
-                controller.showEventsOnMap(foundEvents);
-/*                for (int i = 0; i < foundEvents.size(); i++) {
-                    Log.d(TAG, "processFinish: name: "+ foundEvents.get(i).getName());
+                //Run on ui thread here.
+                for (int i = 0; i < foundEvents.size(); i++) {
+                    mapActivity.addMarker(foundEvents.get(i).getLatLng(), foundEvents.get(i).getName());
+/*                    Log.d(TAG, "processFinish: name: "+ foundEvents.get(i).getName());
                     Log.d(TAG, "processFinish: id: " + foundEvents.get(i).getId());
                     Log.d(TAG, "processFinish: latlng: " + foundEvents.get(i).getLatLng().latitude + ", " + foundEvents.get(i).getLatLng().longitude);
-                    Log.d(TAG, "processFinish: ..........................................");
+                    Log.d(TAG, "processFinish: ..........................................");*/
                 }
-                Log.d(TAG, "processFinish: nbrOfEvents: " + String.valueOf(foundEvents.size()));*/
+                Log.d(TAG, "processFinish: nbrOfEvents: " + String.valueOf(foundEvents.size()));
             }
         });
         tmRequester.execute(URL, REQUEST_TYPE_GET_EVENTS);
