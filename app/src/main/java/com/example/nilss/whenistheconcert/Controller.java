@@ -1,9 +1,14 @@
 package com.example.nilss.whenistheconcert;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
+import com.example.nilss.whenistheconcert.Pojos.SimpleEvent;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 
 public class Controller {
     private MainActivity mainActivity;
@@ -11,21 +16,37 @@ public class Controller {
     private LatLng userLatlng;
     private String dateIntervalSearch;
     private static final String TAG = "Controller";
+    private TicketMasterHandler tmHandler;
 
 
 
     public Controller(MainActivity mainActivity){
         this.mainActivity = mainActivity;
+        tmHandler = new TicketMasterHandler(this);
     }
 
-    public void searchForEventsPressed(LatLng latLng, String startDate, String endDate){
+    public void searchForEventsPressed(LatLng latLng, String cityName, String startDate, String endDate){
         this.userLatlng = latLng;
        // this.dateIntervalSearch = dateInterval;
         Log.d(TAG, "Wrapper" + latLng + "------" + "StartDate: " + startDate + "-----" + "EndDate: " + endDate);
-        Intent intent = new Intent(mainActivity, MapActivity.class);
-        mainActivity.startActivity(intent);
+        tmHandler.requestAllEvents(cityName,startDate,endDate);
+       /* Intent intent = new Intent(mainActivity, MapActivity.class);
+        mainActivity.startActivity(intent);*/
+
+
 
     }
 
 
+    public void showEventsOnMap(ArrayList<SimpleEvent> foundEvents) {
+        if(foundEvents!=null) {
+            for (int i = 0; i < foundEvents.size(); i++) {
+                Log.d(TAG, "processFinish: name: " + foundEvents.get(i).getName());
+                Log.d(TAG, "processFinish: id: " + foundEvents.get(i).getId());
+                Log.d(TAG, "processFinish: latlng: " + foundEvents.get(i).getLatLng().latitude + ", " + foundEvents.get(i).getLatLng().longitude);
+                Log.d(TAG, "processFinish: ..........................................");
+            }
+            Log.d(TAG, "processFinish: nbrOfEvents: " + String.valueOf(foundEvents.size()));
+        }
+    }
 }

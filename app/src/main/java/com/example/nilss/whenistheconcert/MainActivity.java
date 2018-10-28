@@ -59,10 +59,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Start mapactivity if google play services is ok!
-        if (isServiceOk()) {
+/*        if (isServiceOk()) {
             Intent intent = new Intent(MainActivity.this, MapActivity.class);
             startActivity(intent);
-        }
+        }*/
         initComp();
         initStartDateClickListener();
         initEndDateClickListener();
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String startDate = tvStartDate.getText().toString();
                 String endDate = tvEndDate.getText().toString();
-                controller.searchForEventsPressed(latLog, startDate, endDate);
+                controller.searchForEventsPressed(latLog, tvCity.getText().toString(),startDate, endDate);
 
             }
         });

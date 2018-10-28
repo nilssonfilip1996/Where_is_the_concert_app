@@ -1,8 +1,12 @@
 package com.example.nilss.whenistheconcert.Pojos;
 
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 
-public class SimpleEvent {
+import java.io.Serializable;
+
+public class SimpleEvent implements Serializable {
     private String name;
     private String id;
     private LatLng latLng;

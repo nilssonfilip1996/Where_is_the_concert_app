@@ -31,6 +31,11 @@ public class TicketMasterHandler {
     private static final String LOCATION_KEY = "location";
     private static final String LATITUDE_KEY = "latitude";
     private static final String LONGITUDE_KEY = "longitude";
+    private Controller controller;
+
+    public TicketMasterHandler(Controller controller) {
+        this.controller = controller;
+    }
 
 
     /**
@@ -61,13 +66,14 @@ public class TicketMasterHandler {
                     }
                 }
                 //Run on ui thread here. notify controller that new events have been found.
-                for (int i = 0; i < foundEvents.size(); i++) {
+                controller.showEventsOnMap(foundEvents);
+/*                for (int i = 0; i < foundEvents.size(); i++) {
                     Log.d(TAG, "processFinish: name: "+ foundEvents.get(i).getName());
                     Log.d(TAG, "processFinish: id: " + foundEvents.get(i).getId());
                     Log.d(TAG, "processFinish: latlng: " + foundEvents.get(i).getLatLng().latitude + ", " + foundEvents.get(i).getLatLng().longitude);
                     Log.d(TAG, "processFinish: ..........................................");
                 }
-                Log.d(TAG, "processFinish: nbrOfEvents: " + String.valueOf(foundEvents.size()));
+                Log.d(TAG, "processFinish: nbrOfEvents: " + String.valueOf(foundEvents.size()));*/
             }
         });
         tmRequester.execute(URL, REQUEST_TYPE_GET_EVENTS);
