@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -11,6 +12,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //test
         TicketMasterHandler ticketMasterHandler = new TicketMasterHandler();
-        ticketMasterHandler.getAllEvents("malmö");
+        ticketMasterHandler.requestAllEvents("Stockholm", "2018-10-28", "2018-12-31");
     }
 }
