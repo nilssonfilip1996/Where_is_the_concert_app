@@ -13,7 +13,6 @@
         android:layout_marginStart="81dp"
         android:layout_marginTop="54dp"
         android:layout_marginEnd="92dp"
-        android:text="Hello Github!"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

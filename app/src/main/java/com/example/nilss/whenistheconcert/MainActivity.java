@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     LocationManager locationManager;
     LocationListener locationListener;
     private Button btn;
+    private int start=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,18 +70,28 @@ public class MainActivity extends AppCompatActivity {
         initEndDateClickListener();
 
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
-
-
         locationListener = new LocationListener() {
 
             @Override
             public void onLocationChanged(Location location) {
-                double longitude = location.getLongitude();
-                double latitude = location.getLatitude();
-//                tvLocation.setText("Longitude: " + longitude + "\n" + "Latitude: " + latitude);
-                Log.d("Location", location.toString());
-                cityNameRetriever = new CityNameRetriever();
-                cityNameRetriever.execute(location);
+
+                if(start==0) {
+                    Log.d("Location", location.toString());
+                    cityNameRetriever = new CityNameRetriever();
+                    cityNameRetriever.execute(location);
+                    start=1;
+                }
+                else{
+                    
+                    try {
+                        NewCityRetriever();
+                        Log.d(TAG, "GEOLOCATE ENTERED") ;  
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
 //                Log.d(TAG, "tvLOCATION: " + tvLocation.getText());
 
             }
@@ -340,8 +352,31 @@ public class MainActivity extends AppCompatActivity {
             initBtn(latLog);
 
         }
-
-
     }
 
+    public void NewCityRetriever() throws IOException {
+
+        String location = tvCity.getText().toString();
+        Geocoder geo = new Geocoder(this);
+        List<Address> list = geo.getFromLocationName(location, 1);
+        Address add = list.get(0);
+        String locality = add.getLocality();
+      //  Toast.makeText(this, locality, Toast.LENGTH_LONG).show();
+
+        ArrayList<LatLng> latlng = new ArrayList<LatLng>(list.size());
+        for (Address a : list) {
+            if (a.hasLatitude() && a.hasLongitude()) {
+                latlng.add(new LatLng(a.getLatitude(), a.getLongitude()));
+
+            }
+
+        }
+       LatLng latLog = latlng.get(0);
+        Log.d(TAG,"COORDINATES GEO: " + latLog);
+        Log.d(TAG, "CITY RETRIEVED BY TEXTVIEW : " + locality);
+
+        initBtn(latLog);
+    }
+
+    
 }
