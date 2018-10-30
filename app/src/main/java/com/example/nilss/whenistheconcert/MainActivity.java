@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
     private Controller controller = new Controller(this);
     private DatePickerDialog.OnDateSetListener startDateListener;
     private DatePickerDialog.OnDateSetListener endDateListener;
-    //tester
-
     private CityNameRetriever cityNameRetriever;
     private EditText tvLocation, tvCity;
     private TextView tvStartDate, tvEndDate;
@@ -58,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btn;
     private int start = 0;
     private boolean permissionGranted = false;
-    private boolean check=false;
-    private LatLng userCoordinates =null;
+    private boolean check = false;
+    private LatLng userCoordinates = null;
     private String cityName = "";
 
     @Override
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "CHECKED " + check);
 
                 if (check) {
-                    Toast.makeText(MainActivity.this, "Current location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Set new location", Toast.LENGTH_SHORT).show();
                     check = false;
                     Log.d(TAG, "SWICH ON!!");
                     tvCity.setText("");
@@ -92,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
 
-                    Toast.makeText(MainActivity.this, "New city", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Current Location", Toast.LENGTH_SHORT).show();
                     check = true;
                     Log.d(TAG, "LocationManager start");
                     checkLocationsPermissions();
@@ -289,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!check) {
+                if (!check) {
                     try {
                         NewCityRetriever();
                     } catch (IOException e) {
