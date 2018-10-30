@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,10 +52,12 @@ public class MainActivity extends AppCompatActivity {
     private CityNameRetriever cityNameRetriever;
     private EditText tvLocation, tvCity;
     private TextView tvStartDate, tvEndDate;
+    private Switch switchCity;
     LocationManager locationManager;
     LocationListener locationListener;
     private Button btn;
-    private int start=0;
+    private int start = 0;
+    private boolean permissionGranted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,71 +71,86 @@ public class MainActivity extends AppCompatActivity {
         initComp();
         initStartDateClickListener();
         initEndDateClickListener();
-
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-
+        switchCity.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onLocationChanged(Location location) {
+            public void onClick(View v) {
+                boolean check = switchCity.isChecked();
+                check=false;
+                Log.d(TAG, "CHECKED " + check);
 
-                if(start==0) {
-                    Log.d("Location", location.toString());
-                    cityNameRetriever = new CityNameRetriever();
-                    cityNameRetriever.execute(location);
-                    start=1;
+                if (check) {
+                    Toast.makeText(MainActivity.this, "Current location", Toast.LENGTH_SHORT).show();
+                    check = false;
+                    Log.d(TAG, "SWICH ON!!");
+                    locationManager.removeUpdates(locationListener);
+
+
+                } else {
+
+                    Toast.makeText(MainActivity.this, "New city", Toast.LENGTH_SHORT ).show();
+                    check = true;
+                    Log.d(TAG, "LocationManager start");
+
+                    locationListener = new LocationListener() {
+
+                        @Override
+                        public void onLocationChanged(Location location) {
+
+                            Log.d("Location", location.toString());
+                            cityNameRetriever = new CityNameRetriever();
+                            cityNameRetriever.execute(location);
+
+
+
+                        }
+
+                        @Override
+                        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                        }
+
+                        @Override
+                        public void onProviderEnabled(String provider) {
+
+                        }
+
+                        @Override
+                        public void onProviderDisabled(String provider) {
+
+                        }
+                    };
+
                 }
-                else{
-                    
-                    try {
-                        NewCityRetriever();
-                        Log.d(TAG, "GEOLOCATE ENTERED") ;  
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-
-//                Log.d(TAG, "tvLOCATION: " + tvLocation.getText());
-
             }
+        });
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
 
+
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {  // If permission is NOT granted.
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+
+            } else {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locationListener);
+                // Needed for update when application is started again.
             }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {  // If permission is NOT granted.
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-
-        } else {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locationListener);
-            // Needed for update when application is started again.
         }
-    }
+
+
+
 
 
     /*
@@ -147,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
         tvCity = findViewById(R.id.tvCurrentCity);
         tvStartDate = findViewById(R.id.startDate);
         tvEndDate = findViewById(R.id.endDate);
+        switchCity = findViewById(R.id.switchCity);
 
 
     }
@@ -305,7 +324,6 @@ public class MainActivity extends AppCompatActivity {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locationListener);
-
             }
         }
     }
@@ -361,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
         List<Address> list = geo.getFromLocationName(location, 1);
         Address add = list.get(0);
         String locality = add.getLocality();
-      //  Toast.makeText(this, locality, Toast.LENGTH_LONG).show();
+        //  Toast.makeText(this, locality, Toast.LENGTH_LONG).show();
 
         ArrayList<LatLng> latlng = new ArrayList<LatLng>(list.size());
         for (Address a : list) {
@@ -371,12 +389,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-       LatLng latLog = latlng.get(0);
-        Log.d(TAG,"COORDINATES GEO: " + latLog);
+        LatLng latLog = latlng.get(0);
+        Log.d(TAG, "COORDINATES GEO: " + latLog);
         Log.d(TAG, "CITY RETRIEVED BY TEXTVIEW : " + locality);
 
         initBtn(latLog);
     }
 
-    
+
 }
