@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -50,57 +52,58 @@ public class MainActivity extends AppCompatActivity {
     private CityNameRetriever cityNameRetriever;
     private EditText tvLocation, tvCity;
     private TextView tvStartDate, tvEndDate;
+    private Switch switchCity;
     LocationManager locationManager;
     LocationListener locationListener;
     private Button btn;
+    private int start = 0;
+    private boolean permissionGranted = false;
+    private boolean check = false;
+    private LatLng userCoordinates = null;
+    private String cityName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Start mapactivity if google play services is ok!
-/*        if (isServiceOk()) {
+        if (isServiceOk()) {
             Intent intent = new Intent(MainActivity.this, MapActivity.class);
             startActivity(intent);
-        }*/
+        }
         initComp();
         initStartDateClickListener();
         initEndDateClickListener();
 
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
-
-
-        locationListener = new LocationListener() {
-
+        initLocationListener();
+        initBtn();
+        switchCity.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onLocationChanged(Location location) {
-                double longitude = location.getLongitude();
-                double latitude = location.getLatitude();
-//                tvLocation.setText("Longitude: " + longitude + "\n" + "Latitude: " + latitude);
-                Log.d("Location", location.toString());
-                cityNameRetriever = new CityNameRetriever();
-                cityNameRetriever.execute(location);
-//                Log.d(TAG, "tvLOCATION: " + tvLocation.getText());
+            public void onClick(View v) {
+                check = switchCity.isChecked();
+                Log.d(TAG, "CHECKED " + check);
 
+                if (check) {
+                    Toast.makeText(MainActivity.this, "Set new location", Toast.LENGTH_SHORT).show();
+                    check = false;
+                    Log.d(TAG, "SWICH ON!!");
+                    tvCity.setText("");
+                    locationManager.removeUpdates(locationListener);
+
+                } else {
+
+                    Toast.makeText(MainActivity.this, "Current Location", Toast.LENGTH_SHORT).show();
+                    check = true;
+                    Log.d(TAG, "LocationManager start");
+                    checkLocationsPermissions();
+                }
             }
+        });
+        checkLocationsPermissions();
+    }
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-
+    private void checkLocationsPermissions() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -123,10 +126,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+
     /*
         OnCreate ENDS here!
         ------------------
      */
+
+    private void initLocationListener() {
+        locationListener = new LocationListener() {
+
+            @Override
+            public void onLocationChanged(Location location) {
+
+                Log.d("Location", location.toString());
+                cityNameRetriever = new CityNameRetriever();
+                cityNameRetriever.execute(location);
+
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+    }
 
 
     private void initComp() {
@@ -135,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         tvCity = findViewById(R.id.tvCurrentCity);
         tvStartDate = findViewById(R.id.startDate);
         tvEndDate = findViewById(R.id.endDate);
+        switchCity = findViewById(R.id.switchCity);
 
 
     }
@@ -248,15 +285,22 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    private void initBtn(LatLng latLog) {
+    private void initBtn() {
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!check) {
+                    try {
+                        NewCityRetriever();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 String startDate = tvStartDate.getText().toString();
                 String endDate = tvEndDate.getText().toString();
-                controller.searchForEventsPressed(latLog, tvCity.getText().toString(),startDate, endDate);
-
+                String city = cityName;
+                controller.searchForEventsPressed(userCoordinates, startDate, endDate);
             }
         });
 
@@ -331,17 +375,40 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Wrapper wrapper) {
-            String cityName = wrapper.cityName;
+            String cityName2 = wrapper.cityName;
             LatLng latLog = wrapper.latlng.get(0);
 
             Log.d(TAG, "WRAPPER: " + latLog);
-            MainActivity.this.runOnUiThread(() -> tvCity.setText(cityName));
-            Log.d(TAG, "CityName: " + cityName);
-            initBtn(latLog);
+            MainActivity.this.runOnUiThread(() -> tvCity.setText(cityName2));
+            Log.d(TAG, "CityName: " + cityName2);
+            cityName = cityName2;
+            userCoordinates = latLog;
+        }
+    }
+
+    public void NewCityRetriever() throws IOException {
+
+        String location = tvCity.getText().toString();
+        Geocoder geo = new Geocoder(this);
+        List<Address> list = geo.getFromLocationName(location, 1);
+        Address add = list.get(0);
+        String locality = add.getLocality();
+        //  Toast.makeText(this, locality, Toast.LENGTH_LONG).show();
+
+        ArrayList<LatLng> latlng = new ArrayList<LatLng>(list.size());
+        for (Address a : list) {
+            if (a.hasLatitude() && a.hasLongitude()) {
+                latlng.add(new LatLng(a.getLatitude(), a.getLongitude()));
+
+            }
 
         }
-
-
+        LatLng latLog = latlng.get(0);
+        Log.d(TAG, "COORDINATES GEO: " + latLog);
+        Log.d(TAG, "CITY RETRIEVED BY TEXTVIEW : " + locality);
+        cityName = location;
+        userCoordinates = latLog;
     }
+
 
 }

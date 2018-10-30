@@ -13,7 +13,8 @@
         android:layout_marginStart="81dp"
         android:layout_marginTop="54dp"
         android:layout_marginEnd="92dp"
-        android:text="Hello Github!"
+        android:layout_marginBottom="41dp"
+        app:layout_constraintBottom_toTopOf="@+id/switchCity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,13 +38,13 @@
         android:layout_width="122dp"
         android:layout_height="39dp"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="139dp"
+        android:layout_marginTop="71dp"
         android:layout_marginEnd="32dp"
         android:text="Select start date"
         app:layout_constraintEnd_toStartOf="@+id/endDate"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCurrentCity" />
+        app:layout_constraintTop_toBottomOf="@+id/switchCity" />
 
     <TextView
         android:id="@+id/endDate"
@@ -55,6 +56,16 @@
         android:text="Select end date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/startDate"
+        app:layout_constraintTop_toBottomOf="@+id/tvCurrentCity" />
+
+    <Switch
+        android:id="@+id/switchCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="83dp"
+        android:layout_marginTop="41dp"
+        android:text="Search different location"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCurrentCity" />
 
 </android.support.constraint.ConstraintLayout>
