@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">When Is The Concert?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="concert">Nick Cave and The Bad Seeds</string>
+    <string name="location">Malmo Kultur Bolaget</string>
+    <string name="tickets">Tickets</string>
+    <string name="details">Details</string>
+    <string name="dummy">Dummy</string>
 </resources>
