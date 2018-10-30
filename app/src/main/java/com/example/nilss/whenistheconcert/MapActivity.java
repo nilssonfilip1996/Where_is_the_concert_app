@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.nilss.whenistheconcert.Pojos.SimpleEvent;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -11,11 +12,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback{
     private static final String TAG = "MapActivity";
     private GoogleMap mMap;
     private String cityName;
@@ -52,6 +54,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.mMap = googleMap;
         TicketMasterHandler tmHandler = new TicketMasterHandler();
         tmHandler.requestAllEvents(MapActivity.this,cityName,startDate,endDate);
+        mMap.setOnInfoWindowClickListener(this);
 
         /*LatLng random = new LatLng(55.60587, 13.00073);
         addMarker(random,  "Malmo");
@@ -71,4 +74,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Toast.makeText(this, marker.getTitle(),
+                Toast.LENGTH_SHORT).show();
+    }
 }
