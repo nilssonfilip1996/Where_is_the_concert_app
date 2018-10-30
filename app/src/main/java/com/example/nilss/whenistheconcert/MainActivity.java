@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
     private Button btn;
     private int start = 0;
     private boolean permissionGranted = false;
+    private boolean check=false;
+    private LatLng userCoordinates =null;
+    private String cityName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,82 +75,54 @@ public class MainActivity extends AppCompatActivity {
         initStartDateClickListener();
         initEndDateClickListener();
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+        initLocationListener();
+        initBtn();
         switchCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean check = switchCity.isChecked();
-                check=false;
+                check = switchCity.isChecked();
                 Log.d(TAG, "CHECKED " + check);
 
                 if (check) {
                     Toast.makeText(MainActivity.this, "Current location", Toast.LENGTH_SHORT).show();
                     check = false;
                     Log.d(TAG, "SWICH ON!!");
+                    tvCity.setText("");
                     locationManager.removeUpdates(locationListener);
-
 
                 } else {
 
-                    Toast.makeText(MainActivity.this, "New city", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText(MainActivity.this, "New city", Toast.LENGTH_SHORT).show();
                     check = true;
                     Log.d(TAG, "LocationManager start");
-
-                    locationListener = new LocationListener() {
-
-                        @Override
-                        public void onLocationChanged(Location location) {
-
-                            Log.d("Location", location.toString());
-                            cityNameRetriever = new CityNameRetriever();
-                            cityNameRetriever.execute(location);
-
-
-
-                        }
-
-                        @Override
-                        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                        }
-
-                        @Override
-                        public void onProviderEnabled(String provider) {
-
-                        }
-
-                        @Override
-                        public void onProviderDisabled(String provider) {
-
-                        }
-                    };
-
+                    checkLocationsPermissions();
                 }
             }
         });
+        checkLocationsPermissions();
+    }
+
+    private void checkLocationsPermissions() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {  // If permission is NOT granted.
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
 
-
-
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                            != PackageManager.PERMISSION_GRANTED) {  // If permission is NOT granted.
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-
-            } else {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locationListener);
-                // Needed for update when application is started again.
-            }
+        } else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locationListener);
+            // Needed for update when application is started again.
         }
+    }
 
 
 
@@ -157,6 +132,36 @@ public class MainActivity extends AppCompatActivity {
         OnCreate ENDS here!
         ------------------
      */
+
+    private void initLocationListener() {
+        locationListener = new LocationListener() {
+
+            @Override
+            public void onLocationChanged(Location location) {
+
+                Log.d("Location", location.toString());
+                cityNameRetriever = new CityNameRetriever();
+                cityNameRetriever.execute(location);
+
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+    }
 
 
     private void initComp() {
@@ -279,15 +284,22 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    private void initBtn(LatLng latLog) {
+    private void initBtn() {
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!check) {
+                    try {
+                        NewCityRetriever();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 String startDate = tvStartDate.getText().toString();
                 String endDate = tvEndDate.getText().toString();
-                controller.searchForEventsPressed(latLog, startDate, endDate);
-
+                String city = cityName;
+                controller.searchForEventsPressed(userCoordinates, startDate, endDate);
             }
         });
 
@@ -361,14 +373,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Wrapper wrapper) {
-            String cityName = wrapper.cityName;
+            String cityName2 = wrapper.cityName;
             LatLng latLog = wrapper.latlng.get(0);
 
             Log.d(TAG, "WRAPPER: " + latLog);
-            MainActivity.this.runOnUiThread(() -> tvCity.setText(cityName));
-            Log.d(TAG, "CityName: " + cityName);
-            initBtn(latLog);
-
+            MainActivity.this.runOnUiThread(() -> tvCity.setText(cityName2));
+            Log.d(TAG, "CityName: " + cityName2);
+            cityName = cityName2;
+            userCoordinates = latLog;
         }
     }
 
@@ -392,8 +404,8 @@ public class MainActivity extends AppCompatActivity {
         LatLng latLog = latlng.get(0);
         Log.d(TAG, "COORDINATES GEO: " + latLog);
         Log.d(TAG, "CITY RETRIEVED BY TEXTVIEW : " + locality);
-
-        initBtn(latLog);
+        cityName = location;
+        userCoordinates = latLog;
     }
 
 
