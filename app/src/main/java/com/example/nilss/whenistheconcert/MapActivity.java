@@ -7,11 +7,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.nilss.whenistheconcert.Pojos.SimpleEvent;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -61,12 +63,33 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
 
     public void updateEventList(ArrayList<SimpleEvent> foundEvents){
         this.foundEvents = foundEvents;
+        int pinCounter = 0;
+        ArrayList<LatLng> coordinateList = new ArrayList<>();
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (int i = 0; i < foundEvents.size(); i++) {
             addMarker(foundEvents.get(i).getLatLng(), foundEvents.get(i).getName());
+            builder.include(foundEvents.get(i).getLatLng());
+            if(!coordinateList.contains(foundEvents.get(i).getLatLng())){
+                coordinateList.add(foundEvents.get(i).getLatLng());
+                pinCounter++;
+            }
         }
+        if(pinCounter>1){
+            LatLngBounds bounds = builder.build();
+            int width = getResources().getDisplayMetrics().widthPixels;
+            int height = getResources().getDisplayMetrics().heightPixels;
+            int padding = (int) (height * 0.15); // offset from edges of the map 10% of screen
+
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+
+            mMap.animateCamera(cu);
+        }
+        else{
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(foundEvents.get(0).getLatLng(),12f));
+        }
+        Log.d(TAG, "updateEventList: pinCounter: "+ String.valueOf(pinCounter));
     }
     public void addMarker(LatLng latLng, String pinDesc){
-        MarkerOptions markerOptions = new MarkerOptions();
         mMap.addMarker(new MarkerOptions().position(latLng).title(pinDesc));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
@@ -77,6 +100,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
         for (int i = 0; i < foundEvents.size(); i++) {
             if(marker.getTitle().equals(foundEvents.get(i).getName())){
                 id = foundEvents.get(i).getId();
+                break;
             }
         }
         if(id.equals("")){

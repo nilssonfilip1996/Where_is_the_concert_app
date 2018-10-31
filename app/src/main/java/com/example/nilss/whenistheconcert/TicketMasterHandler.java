@@ -52,6 +52,7 @@ public class TicketMasterHandler {
                     try {
                         temp = result.getJSONObject(i);
                         String name = temp.getString(NAME_KEY);
+                        //Log.d(TAG, "processFinish: event: "+ String.valueOf(i) + " "+ name);
                         String id = temp.getString(ID_KEY);
                         JSONObject JSONlocation = temp.getJSONObject("_embedded").getJSONArray("venues").getJSONObject(0).getJSONObject(LOCATION_KEY);
                         LatLng latLng = new LatLng(JSONlocation.getDouble(LATITUDE_KEY), JSONlocation.getDouble(LONGITUDE_KEY));
@@ -61,14 +62,6 @@ public class TicketMasterHandler {
                     }
                 }
                 mapActivity.updateEventList(foundEvents);
-                //Run on ui thread here.
-/*                for (int i = 0; i < foundEvents.size(); i++) {
-                    mapActivity.addMarker(foundEvents.get(i).getLatLng(), foundEvents.get(i).getName());
-                    Log.d(TAG, "processFinish: name: "+ foundEvents.get(i).getName());
-                    Log.d(TAG, "processFinish: id: " + foundEvents.get(i).getId());
-                    Log.d(TAG, "processFinish: latlng: " + foundEvents.get(i).getLatLng().latitude + ", " + foundEvents.get(i).getLatLng().longitude);
-                    Log.d(TAG, "processFinish: ..........................................");
-                }*/
                 Log.d(TAG, "processFinish: nbrOfEvents: " + String.valueOf(foundEvents.size()));
             }
         });
