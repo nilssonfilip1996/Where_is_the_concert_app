@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.nilss.whenistheconcert.Pojos.SimpleEvent;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -11,11 +12,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback{
     private static final String TAG = "MapActivity";
     private GoogleMap mMap;
     private String cityName;
@@ -23,6 +25,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private String startDate;
     private String endDate;
     private ArrayList<SimpleEvent> eventList;
+    private ArrayList<SimpleEvent> foundEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,23 +55,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.mMap = googleMap;
         TicketMasterHandler tmHandler = new TicketMasterHandler();
         tmHandler.requestAllEvents(MapActivity.this,cityName,startDate,endDate);
-
-        /*LatLng random = new LatLng(55.60587, 13.00073);
-        addMarker(random,  "Malmo");
-        random = new LatLng(57.708870, 11.974560);
-        addMarker(random, "Gothenburg");
-        random = new LatLng(59.334591, 18.063240);
-        addMarker(random, "Stockholm");*/
+        mMap.setOnInfoWindowClickListener(this);
     }
 
-    /**
-     * Puts a marker on the map!
-     * @param latLng, Latlng object containing latitude and longitude.
-     * @param pinDesc, desciptive text when user clicks on pin.
-     */
+
+    public void updateEventList(ArrayList<SimpleEvent> foundEvents){
+        this.foundEvents = foundEvents;
+        for (int i = 0; i < foundEvents.size(); i++) {
+            addMarker(foundEvents.get(i).getLatLng(), foundEvents.get(i).getName());
+        }
+    }
     public void addMarker(LatLng latLng, String pinDesc){
+        MarkerOptions markerOptions = new MarkerOptions();
         mMap.addMarker(new MarkerOptions().position(latLng).title(pinDesc));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        String id="";
+        for (int i = 0; i < foundEvents.size(); i++) {
+            if(marker.getTitle().equals(foundEvents.get(i).getName())){
+                id = foundEvents.get(i).getId();
+            }
+        }
+        if(id.equals("")){
+            Toast.makeText(this, "ERROR, no ID found",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, marker.getTitle() + "\n" + id,
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
 }

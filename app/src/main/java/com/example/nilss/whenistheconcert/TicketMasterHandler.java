@@ -60,14 +60,15 @@ public class TicketMasterHandler {
                         e.printStackTrace();
                     }
                 }
+                mapActivity.updateEventList(foundEvents);
                 //Run on ui thread here.
-                for (int i = 0; i < foundEvents.size(); i++) {
+/*                for (int i = 0; i < foundEvents.size(); i++) {
                     mapActivity.addMarker(foundEvents.get(i).getLatLng(), foundEvents.get(i).getName());
-/*                    Log.d(TAG, "processFinish: name: "+ foundEvents.get(i).getName());
+                    Log.d(TAG, "processFinish: name: "+ foundEvents.get(i).getName());
                     Log.d(TAG, "processFinish: id: " + foundEvents.get(i).getId());
                     Log.d(TAG, "processFinish: latlng: " + foundEvents.get(i).getLatLng().latitude + ", " + foundEvents.get(i).getLatLng().longitude);
-                    Log.d(TAG, "processFinish: ..........................................");*/
-                }
+                    Log.d(TAG, "processFinish: ..........................................");
+                }*/
                 Log.d(TAG, "processFinish: nbrOfEvents: " + String.valueOf(foundEvents.size()));
             }
         });
