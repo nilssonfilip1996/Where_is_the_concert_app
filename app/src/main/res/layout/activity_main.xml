@@ -40,7 +40,7 @@
         android:layout_marginStart="52dp"
         android:layout_marginTop="71dp"
         android:layout_marginEnd="32dp"
-        android:text="Select start date"
+        android:hint="Select start date"
         app:layout_constraintEnd_toStartOf="@+id/endDate"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="139dp"
         android:layout_marginEnd="56dp"
-        android:text="Select end date"
+        android:hint="Select end date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/startDate"
         app:layout_constraintTop_toBottomOf="@+id/tvCurrentCity" />

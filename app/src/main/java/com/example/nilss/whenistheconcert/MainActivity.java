@@ -36,8 +36,11 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean check = false;
     private LatLng userCoordinates = null;
     private String cityName = "";
+    private String countryCode= "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -300,7 +304,46 @@ public class MainActivity extends AppCompatActivity {
                 String startDate = tvStartDate.getText().toString();
                 String endDate = tvEndDate.getText().toString();
                 String city = cityName;
-                controller.searchForEventsPressed(userCoordinates, city, startDate, endDate);
+
+                if(cityName.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "You must enter a city", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if((startDate.isEmpty()) || (endDate.isEmpty())){
+                    Toast.makeText(getApplicationContext(), "You must enter start and end date", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                SimpleDateFormat df  = new SimpleDateFormat("yyyy-MM-dd");
+                Boolean dateChecker=false;
+                try {
+                    Date sdate = df.parse(startDate);
+                    Date edate = df.parse(endDate);
+
+                    Log.d(TAG, "DATE: " + sdate +"------" + edate);
+
+                    if(sdate.before(edate)){
+                        dateChecker=true;
+
+
+                    }
+                    else{
+                        dateChecker=false;
+                        Toast.makeText(getApplicationContext(), "Start date must come before end date", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if(dateChecker==true){
+                   controller.searchForEventsPressed(userCoordinates, city, startDate, endDate);
+                }
+                else{
+                    return;
+                }
+
+
+
             }
         });
 
@@ -348,10 +391,12 @@ public class MainActivity extends AppCompatActivity {
             Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
             List<Address> addresses = null;
             String cityName = "";
+            String countryCode = "";
             Wrapper wrapper = null;
             try {
                 addresses = geocoder.getFromLocation(locations[0].getLatitude(), locations[0].getLongitude(), 1);
                 cityName = addresses.get(0).getLocality();
+                countryCode = addresses.get(0).getCountryCode();
                 Log.d(TAG, "onLocationChanged: full address: " + addresses.get(0).getAddressLine(0));
 
                 ArrayList<LatLng> latlng = new ArrayList<LatLng>(addresses.size());
@@ -363,6 +408,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 wrapper = new Wrapper();
                 wrapper.cityName = cityName;
+                wrapper.countryCode = countryCode;
                 wrapper.latlng = latlng;
 
 
@@ -381,8 +427,11 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "WRAPPER: " + latLog);
             MainActivity.this.runOnUiThread(() -> tvCity.setText(cityName2));
             Log.d(TAG, "CityName: " + cityName2);
+            Log.d(TAG, "CountryCode: " + wrapper.countryCode);
             cityName = cityName2;
             userCoordinates = latLog;
+            countryCode = wrapper.countryCode;
+
         }
     }
 
