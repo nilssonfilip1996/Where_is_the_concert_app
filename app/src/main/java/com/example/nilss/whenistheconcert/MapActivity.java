@@ -62,6 +62,11 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
 
 
     public void updateEventList(ArrayList<SimpleEvent> foundEvents){
+        if(foundEvents.size()==0){
+            Toast.makeText(this, "No events Found!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         this.foundEvents = foundEvents;
         int pinCounter = 0;
         ArrayList<LatLng> coordinateList = new ArrayList<>();

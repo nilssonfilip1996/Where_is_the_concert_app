@@ -132,6 +132,11 @@ public class TicketMasterHandler {
                 //Request all events(Filip And Jesper).
                 if(requestType.equals(REQUEST_TYPE_GET_EVENTS)) {
                     JSONObject jsonObject = new JSONObject(s);
+                    Log.d(TAG, "onPostExecute: nbrOfEventsALALA: " + String.valueOf(jsonObject.getJSONObject("page").getInt("totalElements")));
+                    if(jsonObject.getJSONObject("page").getInt("totalElements")==0){
+                        delegate.processFinish(new JSONArray());
+                        return;
+                    }
                     JSONArray jsonArray = jsonObject.getJSONObject("_embedded").getJSONArray("events");
                     if (jsonArray != null) {
                         delegate.processFinish(jsonArray);
