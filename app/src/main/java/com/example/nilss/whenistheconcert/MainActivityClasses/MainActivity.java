@@ -1,4 +1,4 @@
-package com.example.nilss.whenistheconcert;
+package com.example.nilss.whenistheconcert.MainActivityClasses;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +26,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nilss.whenistheconcert.R;
+import com.example.nilss.whenistheconcert.Wrapper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn;
     private int start = 0;
     private boolean permissionGranted = false;
-    private boolean check = false;
+    private boolean check = true;
     private LatLng userCoordinates = null;
     private String cityName = "";
     private String countryCode= "";
@@ -308,6 +310,10 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+                if(cityName==null){
+                    Toast.makeText(getApplicationContext(), "No city found with that name!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String startDate = tvStartDate.getText().toString();
                 String endDate = tvEndDate.getText().toString();
                 String city = cityName;
@@ -343,10 +349,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if(dateChecker==true){
+                    Log.d(TAG, "onClick: blabla: " + userCoordinates);
                    controller.searchForEventsPressed(userCoordinates, city, countryCode, startDate, endDate);
-                }
-                else{
-                    return;
                 }
 
 
@@ -447,6 +451,10 @@ public class MainActivity extends AppCompatActivity {
         String location = tvCity.getText().toString();
         Geocoder geo = new Geocoder(this);
         List<Address> list = geo.getFromLocationName(location, 1);
+        if(list.size()==0){
+            cityName=null;
+            return;
+        }
         Address add = list.get(0);
         String locality = add.getLocality();
         //  Toast.makeText(this, locality, Toast.LENGTH_LONG).show();
@@ -463,7 +471,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "COORDINATES GEO: " + latLog);
         Log.d(TAG, "CITY RETRIEVED BY TEXTVIEW : " + locality);
         cityName = location;
-        userCoordinates = latLog;
+        //userCoordinates = latLog;
+        userCoordinates=null;
     }
 
 

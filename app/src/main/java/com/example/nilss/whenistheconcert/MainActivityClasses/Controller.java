@@ -1,10 +1,9 @@
-package com.example.nilss.whenistheconcert;
+package com.example.nilss.whenistheconcert.MainActivityClasses;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
+import com.example.nilss.whenistheconcert.MapActivityClasses.MapActivity;
 import com.example.nilss.whenistheconcert.Pojos.SimpleEvent;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -29,8 +28,14 @@ public class Controller {
         Log.d(TAG, "Wrapper" + latLng + "------" + "StartDate: " + startDate + "-----" + "EndDate: " + endDate);
         //tmHandler.requestAllEvents(cityName,startDate,endDate);
         Intent intent = new Intent(mainActivity, MapActivity.class);
-        intent.putExtra("latitude", String.valueOf(latLng.latitude));
-        intent.putExtra("longitude", String.valueOf(latLng.longitude));
+        if(latLng==null){
+            intent.putExtra("latitude", "");
+            intent.putExtra("longitude", "");
+        }
+        else {
+            intent.putExtra("latitude", String.valueOf(latLng.latitude));
+            intent.putExtra("longitude", String.valueOf(latLng.longitude));
+        }
         intent.putExtra("city", cityName);
         intent.putExtra("countryCode", countryCode);
         intent.putExtra("startDate", startDate);
