@@ -1,13 +1,11 @@
 package com.example.nilss.whenistheconcert;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -21,26 +19,18 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.app.Dialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nilss.whenistheconcert.Wrapper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -313,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!check) {
                     try {
-                        NewCityRetriever();
+                        newCityRetriever();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -452,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void NewCityRetriever() throws IOException {
+    public void newCityRetriever() throws IOException {
 
         String location = tvCity.getText().toString();
         Geocoder geo = new Geocoder(this);

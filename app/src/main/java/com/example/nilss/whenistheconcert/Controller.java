@@ -36,9 +36,6 @@ public class Controller {
         intent.putExtra("startDate", startDate);
         intent.putExtra("endDate", endDate);
         mainActivity.startActivity(intent);
-
-
-
     }
 
 
