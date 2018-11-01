@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     check = false;
                     Log.d(TAG, "SWICH ON!!");
                     tvCity.setText("");
+                    countryCode="";
                     locationManager.removeUpdates(locationListener);
 
                 } else {
@@ -336,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if(dateChecker==true){
-                   controller.searchForEventsPressed(userCoordinates, city, startDate, endDate);
+                   controller.searchForEventsPressed(userCoordinates, city, countryCode, startDate, endDate);
                 }
                 else{
                     return;

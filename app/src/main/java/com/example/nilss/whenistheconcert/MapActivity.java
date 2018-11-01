@@ -28,6 +28,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
     private String endDate;
     private ArrayList<SimpleEvent> eventList;
     private ArrayList<SimpleEvent> foundEvents;
+    private String countryCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
         double longitude = Double.valueOf(intent.getStringExtra("longitude"));
         this.userLocation = new LatLng(latitude,longitude);
         this.cityName = intent.getStringExtra("city");
+        this.countryCode = intent.getStringExtra("countryCode");
         this.startDate = intent.getStringExtra("startDate");
         this.endDate = intent.getStringExtra("endDate");
         Log.d(TAG, "onCreate: city: " + cityName);
@@ -56,7 +58,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
         TicketMasterHandler tmHandler = new TicketMasterHandler();
-        tmHandler.requestAllEvents(MapActivity.this,cityName,startDate,endDate);
+        tmHandler.requestAllEvents(MapActivity.this,cityName,countryCode,startDate,endDate);
         mMap.setOnInfoWindowClickListener(this);
     }
 
