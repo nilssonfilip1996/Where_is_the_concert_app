@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean check = false;
     private LatLng userCoordinates = null;
     private String cityName = "";
-    private String countryCode= "";
+    private String countryCode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -305,29 +305,28 @@ public class MainActivity extends AppCompatActivity {
                 String endDate = tvEndDate.getText().toString();
                 String city = cityName;
 
-                if(cityName.isEmpty()){
+                if (cityName.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You must enter a city", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if((startDate.isEmpty()) || (endDate.isEmpty())){
+                if ((startDate.isEmpty()) || (endDate.isEmpty())) {
                     Toast.makeText(getApplicationContext(), "You must enter start and end date", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                SimpleDateFormat df  = new SimpleDateFormat("yyyy-MM-dd");
-                Boolean dateChecker=false;
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                Boolean dateChecker = false;
                 try {
                     Date sdate = df.parse(startDate);
                     Date edate = df.parse(endDate);
 
-                    Log.d(TAG, "DATE: " + sdate +"------" + edate);
+                    Log.d(TAG, "DATE: " + sdate + "------" + edate);
 
-                    if(sdate.before(edate)){
-                        dateChecker=true;
+                    if (sdate.before(edate)) {
+                        dateChecker = true;
 
 
-                    }
-                    else{
-                        dateChecker=false;
+                    } else {
+                        dateChecker = false;
                         Toast.makeText(getApplicationContext(), "Start date must come before end date", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -335,13 +334,11 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if(dateChecker==true){
-                   controller.searchForEventsPressed(userCoordinates, city, startDate, endDate);
-                }
-                else{
+                if (dateChecker == true) {
+                    controller.searchForEventsPressed(userCoordinates, city, startDate, endDate);
+                } else {
                     return;
                 }
-
 
 
             }
