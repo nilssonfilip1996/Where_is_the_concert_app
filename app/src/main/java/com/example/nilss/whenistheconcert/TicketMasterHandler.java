@@ -3,8 +3,10 @@ package com.example.nilss.whenistheconcert;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.nilss.whenistheconcert.Pojos.DetailedEvent;
 import com.example.nilss.whenistheconcert.Pojos.SimpleEvent;
 import com.google.android.gms.maps.model.LatLng;
+//import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +33,9 @@ public class TicketMasterHandler {
     private static final String LOCATION_KEY = "location";
     private static final String LATITUDE_KEY = "latitude";
     private static final String LONGITUDE_KEY = "longitude";
+    private static final String TICKETS_URL = "url";
+    private static final String IMAGE_URL = "url";
+
 
 
     /**
@@ -64,7 +69,7 @@ public class TicketMasterHandler {
                 for (int i = 0; i < foundEvents.size(); i++) {
                     Log.d(TAG, "processFinish: name: "+ foundEvents.get(i).getName());
                     Log.d(TAG, "processFinish: id: " + foundEvents.get(i).getId());
-                    Log.d(TAG, "processFinish: latlng: " + foundEvents.get(i).getLatLng().latitude + ", " + foundEvents.get(i).getLatLng().longitude);
+                  //  Log.d(TAG, "processFinish: latlng: " + foundEvents.get(i).getLatLng().latitude + ", " + foundEvents.get(i).getLatLng().longitude);
                     Log.d(TAG, "processFinish: ..........................................");
                 }
                 Log.d(TAG, "processFinish: nbrOfEvents: " + String.valueOf(foundEvents.size()));
@@ -80,6 +85,34 @@ public class TicketMasterHandler {
      */
     public void getEventInfo(String eventID){
         //Do something
+        String URL = rootURL + "events/" + eventID + ".json?apikey=" + tmAPIKey ;
+        Log.d(TAG, "getEventInfo: URL: "+ URL);
+        TMRequester tmRequester = new TMRequester(new AsyncResponse() {
+            @Override
+            public void processFinish(JSONArray result) {
+                JSONObject temp = null;
+                try{
+                    temp = result.getJSONObject(0);
+                    String name = temp.getString(NAME_KEY);
+                    String ticketUrl = temp.getString(TICKETS_URL);
+                    String imageUrl = temp.getJSONArray("images").getJSONObject(0).getString(IMAGE_URL);
+                    String venue = temp.getJSONObject("_embedded").getJSONArray("venues").getJSONObject(0).getString(NAME_KEY);
+                    String date = temp.getJSONObject("dates").getJSONObject("start").getString("localDate");
+//                    Log.d(TAG, "processFinish: Name: "+name);
+//                    Log.d(TAG, "processFinish: ticket: "+ticketUrl);
+//                    Log.d(TAG, "processFinish: image:"+imageUrl);
+//                    Log.d(TAG, "processFinish: Venue: "+venue);
+//                    Log.d(TAG, "processFinish: Date:"+date);
+                    DetailedEvent event = new DetailedEvent(name, venue, date, ticketUrl, imageUrl);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        tmRequester.execute(URL, REQUEST_TYPE_GET_EVENT_INFO);
+
     }
 
     /**
@@ -148,11 +181,29 @@ public class TicketMasterHandler {
                 }
                 //Otherwise it is a eventInfo request!(Zorica and Arnes).
                 else{
+                    JSONObject jsonObject = new JSONObject(s);
+                    JSONArray jsonArray = covertJsonObjectToJsonArray(jsonObject);
+                    if(jsonArray!=null) {
+                        delegate.processFinish(jsonArray);
+                    }
 
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public  JSONArray covertJsonObjectToJsonArray(Object InsideArray) {
+
+        JSONArray jsonArray;
+
+        if (InsideArray instanceof JSONArray) {
+            jsonArray = (JSONArray) InsideArray;
+        } else {
+            jsonArray = new JSONArray();
+            jsonArray.put((JSONObject) InsideArray);
+        }
+        return jsonArray;
     }
 }
