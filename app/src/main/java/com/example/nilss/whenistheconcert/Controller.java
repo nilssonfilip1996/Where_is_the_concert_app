@@ -23,7 +23,7 @@ public class Controller {
         this.mainActivity = mainActivity;
     }
 
-    public void searchForEventsPressed(LatLng latLng, String cityName, String startDate, String endDate){
+    public void searchForEventsPressed(LatLng latLng, String cityName, String countryCode, String startDate, String endDate){
         this.userLatlng = latLng;
        // this.dateIntervalSearch = dateInterval;
         Log.d(TAG, "Wrapper" + latLng + "------" + "StartDate: " + startDate + "-----" + "EndDate: " + endDate);
@@ -32,6 +32,7 @@ public class Controller {
         intent.putExtra("latitude", String.valueOf(latLng.latitude));
         intent.putExtra("longitude", String.valueOf(latLng.longitude));
         intent.putExtra("city", cityName);
+        intent.putExtra("countryCode", countryCode);
         intent.putExtra("startDate", startDate);
         intent.putExtra("endDate", endDate);
         mainActivity.startActivity(intent);

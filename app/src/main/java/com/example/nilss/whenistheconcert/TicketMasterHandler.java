@@ -39,10 +39,16 @@ public class TicketMasterHandler {
      * @param dateFrom, from?
      * @param dateTo, to?
      */
-    public void requestAllEvents(MapActivity mapActivity, String cityName, String dateFrom, String dateTo){
+    public void requestAllEvents(MapActivity mapActivity, String cityName, String countryCode, String dateFrom, String dateTo){
         //String URL = rootURL + "events.json?" + "classificationName=music"+ "&city=" + cityName + "&apikey="+ tmAPIKey;
-        String dateCriteria = "startDateTime="+dateFrom+"T00:00:00Z&endDateTime=" + dateTo + "T00:00:00Z";
-        String URL = rootURL + "events.json?" + dateCriteria + "&city=" + cityName + "&size=199" + "&apikey="+ tmAPIKey;
+        String dateCriteria = "&startDateTime="+dateFrom+"T00:00:00Z&endDateTime=" + dateTo + "T00:00:00Z";
+        String URL;
+        if(countryCode.equals("")){
+            URL = rootURL + "events.json?" + "classificationName=music" + dateCriteria + "&city=" + cityName + "&size=199" + "&apikey="+ tmAPIKey;
+        }
+        else{
+            URL = rootURL + "events.json?" + "classificationName=music" + dateCriteria + "&countryCode=" + countryCode + "&city=" + cityName + "&size=199" + "&apikey="+ tmAPIKey;
+        }
         TMRequester tmRequester = new TMRequester(new AsyncResponse() {
             @Override
             public void processFinish(JSONArray result) {
