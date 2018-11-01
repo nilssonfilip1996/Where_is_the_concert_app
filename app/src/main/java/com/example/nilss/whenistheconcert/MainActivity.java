@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         initLocationListener();
         initBtn();
+        tvCity.setEnabled(false);
+        tvCity.setClickable(false);
         switchCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "SWICH ON!!");
                     tvCity.setText("");
                     countryCode="";
+                    tvCity.setEnabled(true);
+                    tvCity.setClickable(true);
                     locationManager.removeUpdates(locationListener);
 
                 } else {
@@ -102,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Current Location", Toast.LENGTH_SHORT).show();
                     check = true;
                     Log.d(TAG, "LocationManager start");
+                    tvCity.setEnabled(false);
+                    tvCity.setClickable(false);
                     checkLocationsPermissions();
                 }
             }
