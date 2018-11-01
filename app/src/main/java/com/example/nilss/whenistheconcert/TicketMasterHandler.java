@@ -44,10 +44,16 @@ public class TicketMasterHandler {
      * @param dateFrom, from?
      * @param dateTo, to?
      */
-    public void requestAllEvents(String cityName, String dateFrom, String dateTo){
+    public void requestAllEvents(MapActivity mapActivity, String cityName, String countryCode, String dateFrom, String dateTo){
         //String URL = rootURL + "events.json?" + "classificationName=music"+ "&city=" + cityName + "&apikey="+ tmAPIKey;
-        String dateCriteria = "startDateTime="+dateFrom+"T00:00:00Z&endDateTime=" + dateTo + "T00:00:00Z";
-        String URL = rootURL + "events.json?" + dateCriteria + "&city=" + cityName + "&size=199" + "&apikey="+ tmAPIKey;
+        String dateCriteria = "&startDateTime="+dateFrom+"T00:00:00Z&endDateTime=" + dateTo + "T00:00:00Z";
+        String URL;
+        if(countryCode.equals("")){
+            URL = rootURL + "events.json?" + "classificationName=music" + dateCriteria + "&city=" + cityName + "&size=199" + "&apikey="+ tmAPIKey;
+        }
+        else{
+            URL = rootURL + "events.json?" + "classificationName=music" + dateCriteria + "&countryCode=" + countryCode + "&city=" + cityName + "&size=199" + "&apikey="+ tmAPIKey;
+        }
         TMRequester tmRequester = new TMRequester(new AsyncResponse() {
             @Override
             public void processFinish(JSONArray result) {
@@ -57,6 +63,7 @@ public class TicketMasterHandler {
                     try {
                         temp = result.getJSONObject(i);
                         String name = temp.getString(NAME_KEY);
+                        //Log.d(TAG, "processFinish: event: "+ String.valueOf(i) + " "+ name);
                         String id = temp.getString(ID_KEY);
                         JSONObject JSONlocation = temp.getJSONObject("_embedded").getJSONArray("venues").getJSONObject(0).getJSONObject(LOCATION_KEY);
                         LatLng latLng = new LatLng(JSONlocation.getDouble(LATITUDE_KEY), JSONlocation.getDouble(LONGITUDE_KEY));
@@ -65,13 +72,8 @@ public class TicketMasterHandler {
                         e.printStackTrace();
                     }
                 }
-                //Run on ui thread here. notify controller that new events have been found.
-                for (int i = 0; i < foundEvents.size(); i++) {
-                    Log.d(TAG, "processFinish: name: "+ foundEvents.get(i).getName());
-                    Log.d(TAG, "processFinish: id: " + foundEvents.get(i).getId());
-                  //  Log.d(TAG, "processFinish: latlng: " + foundEvents.get(i).getLatLng().latitude + ", " + foundEvents.get(i).getLatLng().longitude);
-                    Log.d(TAG, "processFinish: ..........................................");
-                }
+
+                mapActivity.updateEventList(foundEvents);
                 Log.d(TAG, "processFinish: nbrOfEvents: " + String.valueOf(foundEvents.size()));
             }
         });
@@ -170,6 +172,11 @@ public class TicketMasterHandler {
                 //Request all events(Filip And Jesper).
                 if(requestType.equals(REQUEST_TYPE_GET_EVENTS)) {
                     JSONObject jsonObject = new JSONObject(s);
+                    Log.d(TAG, "onPostExecute: nbrOfEventsALALA: " + String.valueOf(jsonObject.getJSONObject("page").getInt("totalElements")));
+                    if(jsonObject.getJSONObject("page").getInt("totalElements")==0){
+                        delegate.processFinish(new JSONArray());
+                        return;
+                    }
                     JSONArray jsonArray = jsonObject.getJSONObject("_embedded").getJSONArray("events");
                     if (jsonArray != null) {
                         delegate.processFinish(jsonArray);
