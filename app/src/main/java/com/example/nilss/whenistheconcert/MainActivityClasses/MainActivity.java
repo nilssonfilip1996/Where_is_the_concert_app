@@ -47,12 +47,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private Controller controller = new Controller(this);
     private DatePickerDialog.OnDateSetListener startDateListener;
-    private DatePickerDialog.OnDateSetListener endDateListener;
-    //tester
 
     private CityNameRetriever cityNameRetriever;
     private EditText tvLocation, tvCity;
-    private TextView tvStartDate, tvEndDate;
+    private TextView tvSelectDate, tvEndDate;
     private Switch switchCity;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -62,9 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean check = true;
     private LatLng userCoordinates = null;
     private String cityName = "";
-    private String countryCode= "";
-
-    //Button button;
+    private String countryCode = "";
+    private String currentDate = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
         initComp();
         initStartDateClickListener();
-        initEndDateClickListener();
+        initTodaysDate();
 
 
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -91,13 +88,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 check = switchCity.isChecked();
                 Log.d(TAG, "CHECKED " + check);
+                tvCity.setText("");
 
                 if (check) {
                     Toast.makeText(MainActivity.this, "Set new location", Toast.LENGTH_SHORT).show();
                     check = false;
                     Log.d(TAG, "SWICH ON!!");
                     tvCity.setText("");
-                    countryCode="";
+                    countryCode = "";
                     tvCity.setEnabled(true);
                     tvCity.setClickable(true);
                     locationManager.removeUpdates(locationListener);
@@ -138,10 +136,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
     /*
         OnCreate ENDS here!
         ------------------
@@ -180,10 +174,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initComp() {
         btn = findViewById(R.id.findButton);
-        //  tvLocation = findViewById(R.id.tvLocation);
         tvCity = findViewById(R.id.tvCurrentCity);
-        tvStartDate = findViewById(R.id.startDate);
-        tvEndDate = findViewById(R.id.endDate);
+        tvSelectDate = findViewById(R.id.startDate);
         switchCity = findViewById(R.id.switchCity);
 
 
@@ -192,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initStartDateClickListener() {
 
-        this.tvStartDate.setOnClickListener(new View.OnClickListener() {
+        this.tvSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -217,13 +209,13 @@ public class MainActivity extends AppCompatActivity {
                     intMonth = Integer.parseInt(fmonth) + 1;
                     String paddedMonth = String.format("%02d", intMonth);
                     String date = year + "-" + paddedMonth + "-" + fday;
-                    tvStartDate.setText(date);
+                    tvSelectDate.setText(date);
                 } else if (day < 10) {
 
                     fday = "0" + day;
                     month = month + 1;
                     String date = year + "-" + month + "-" + fday;
-                    tvStartDate.setText(date);
+                    tvSelectDate.setText(date);
 
                 } else if (month < 10) {
 
@@ -231,12 +223,12 @@ public class MainActivity extends AppCompatActivity {
                     intMonth = Integer.parseInt(fmonth) + 1;
                     String paddedMonth = String.format("%02d", intMonth);
                     String date = year + "-" + paddedMonth + "-" + day;
-                    tvStartDate.setText(date);
+                    tvSelectDate.setText(date);
                 } else {
 
                     month = month + 1;
                     String date = year + "-" + month + "-" + day;
-                    tvStartDate.setText(date);
+                    tvSelectDate.setText(date);
 
 
                 }
@@ -244,58 +236,53 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
+    private void initTodaysDate() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        currentDate = year + "-" + month + "" + day;
+
+
+        String fmonth, fday;
+        int intMonth;
+        if (month < 10 && day < 10) {
+            fmonth = "0" + month;
+            fday = "0" + day;
+            intMonth = Integer.parseInt(fmonth) + 1;
+            String paddedMonth = String.format("%02d", intMonth);
+            currentDate = year + "-" + paddedMonth + "-" + fday;
+
+        } else if (day < 10) {
+
+            fday = "0" + day;
+            month = month + 1;
+            currentDate = year + "-" + month + "-" + fday;
+
+
+        } else if (month < 10) {
+
+            fmonth = "0" + month;
+            intMonth = Integer.parseInt(fmonth) + 1;
+            String paddedMonth = String.format("%02d", intMonth);
+            currentDate = year + "-" + paddedMonth + "-" + day;
+
+        } else {
+
+            month = month + 1;
+            currentDate = year + "-" + month + "-" + day;
+
+
+        }
+
+
+    }
+
+
     private void initEndDateClickListener() {
 
-        this.tvEndDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog dialog = new DatePickerDialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog_MinWidth, endDateListener, year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable((Color.TRANSPARENT)));
-                dialog.show();
-            }
-        });
-
-        endDateListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                String fmonth, fday;
-                int intMonth;
-                if (month < 10 && day < 10) {
-                    fmonth = "0" + month;
-                    fday = "0" + day;
-                    intMonth = Integer.parseInt(fmonth) + 1;
-                    String paddedMonth = String.format("%02d", intMonth);
-                    String date = year + "-" + paddedMonth + "-" + fday;
-                    tvEndDate.setText(date);
-                } else if (day < 10) {
-
-                    fday = "0" + day;
-                    month = month + 1;
-                    String date = year + "-" + month + "-" + fday;
-                    tvEndDate.setText(date);
-
-                } else if (month < 10) {
-
-                    fmonth = "0" + month;
-                    intMonth = Integer.parseInt(fmonth) + 1;
-                    String paddedMonth = String.format("%02d", intMonth);
-                    String date = year + "-" + paddedMonth + "-" + day;
-                    tvEndDate.setText(date);
-                } else {
-
-                    month = month + 1;
-                    String date = year + "-" + month + "-" + day;
-                    tvEndDate.setText(date);
-
-
-                }
-            }
-        };
     }
 
     private void initBtn() {
@@ -310,59 +297,55 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                if(cityName==null){
+                if (cityName == null) {
                     Toast.makeText(getApplicationContext(), "No city found with that name!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String startDate = tvStartDate.getText().toString();
-                String endDate = tvEndDate.getText().toString();
+                String selectDate = tvSelectDate.getText().toString();
+                String endDate = tvSelectDate.getText().toString();
                 String city = cityName;
 
-                if(cityName.isEmpty()){
+                if (cityName.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You must enter a city", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if((startDate.isEmpty()) || (endDate.isEmpty())){
-                    Toast.makeText(getApplicationContext(), "You must enter start and end date", Toast.LENGTH_SHORT).show();
+                if ((selectDate.isEmpty())) {
+                    Toast.makeText(getApplicationContext(), "You must select a date", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                SimpleDateFormat df  = new SimpleDateFormat("yyyy-MM-dd");
-                Boolean dateChecker=false;
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                Boolean dateChecker = false;
                 try {
-                    Date sdate = df.parse(startDate);
-                    Date edate = df.parse(endDate);
+                    Date sdate = df.parse(selectDate);
+                    Date currentDay = df.parse(currentDate);
 
-                    Log.d(TAG, "DATE: " + sdate +"------" + edate);
+                    Log.d(TAG, "DATE: " + sdate + "------" + currentDay);
 
-                    if(sdate.before(edate)){
-                        dateChecker=true;
-
-
-                    }
-                    else if(sdate.equals(edate)){
-                        dateChecker=true;
-                    }
-                    else{
-                        dateChecker=false;
-                        Toast.makeText(getApplicationContext(), "Start date must come before end date", Toast.LENGTH_SHORT).show();
+                    if (sdate.before(currentDay)) {
+                        dateChecker = false;
+                        Toast.makeText(getApplicationContext(), "Selected day has expired. Choose a different day", Toast.LENGTH_SHORT).show();
                         return;
+
+                    } else if (sdate.equals(currentDay)) {
+                        dateChecker = true;
+                    } else {
+                        dateChecker = true;
+
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                if(dateChecker==true){
+                if (dateChecker == true) {
                     Log.d(TAG, "onClick: blabla: " + userCoordinates);
-                   controller.searchForEventsPressed(userCoordinates, city, countryCode, startDate, endDate);
+                    controller.searchForEventsPressed(userCoordinates, city, countryCode, selectDate, endDate);
                 }
-
 
 
             }
         });
 
     }
-
 
     /**
      * Not sure what the deal with google play services is.
@@ -454,8 +437,8 @@ public class MainActivity extends AppCompatActivity {
         String location = tvCity.getText().toString();
         Geocoder geo = new Geocoder(this);
         List<Address> list = geo.getFromLocationName(location, 1);
-        if(list.size()==0){
-            cityName=null;
+        if (list.size() == 0) {
+            cityName = null;
             return;
         }
         Address add = list.get(0);
@@ -475,7 +458,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "CITY RETRIEVED BY TEXTVIEW : " + locality);
         cityName = location;
         //userCoordinates = latLog;
-        userCoordinates=null;
+        userCoordinates = null;
     }
 
 

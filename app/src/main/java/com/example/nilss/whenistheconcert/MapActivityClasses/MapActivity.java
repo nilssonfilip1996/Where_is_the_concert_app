@@ -109,7 +109,7 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
     }
     public void addMarker(LatLng latLng, String pinDesc){
         if(pinDesc==null){
-          //  mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.rockstarhand)));
+            mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.icons8_metal_music_24)));
         }
         else {
             mMap.addMarker(new MarkerOptions().position(latLng).title(pinDesc));
