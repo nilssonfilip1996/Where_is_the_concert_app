@@ -3,6 +3,7 @@ package com.example.nilss.whenistheconcert;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.nilss.whenistheconcert.BandPlayingActivityClasses.BandPlayingActivity;
 import com.example.nilss.whenistheconcert.MapActivityClasses.MapActivity;
 import com.example.nilss.whenistheconcert.Pojos.DetailedEvent;
 import com.example.nilss.whenistheconcert.Pojos.SimpleEvent;

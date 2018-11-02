@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.example.nilss.whenistheconcert.Pojos.DetailedEvent;
 import com.example.nilss.whenistheconcert.Pojos.SimpleEvent;
+import com.example.nilss.whenistheconcert.TicketMasterHandler;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
