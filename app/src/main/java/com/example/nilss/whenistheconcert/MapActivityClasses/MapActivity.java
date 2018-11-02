@@ -30,7 +30,6 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
     private LatLng userLocation;
     private String startDate;
     private String endDate;
-    private ArrayList<SimpleEvent> eventList;
     private ArrayList<SimpleEvent> foundEvents;
     private String countryCode;
 
