@@ -12,7 +12,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="80dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="93dp"
+        android:layout_marginEnd="80dp"
         android:drawableLeft="@drawable/ic_search_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -37,12 +37,14 @@
 
     <TextView
         android:id="@+id/startDate"
-        android:layout_width="122dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="120dp"
+        android:layout_width="211dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="120dp"
+        android:layout_marginEnd="80dp"
         android:hint="Select start date"
+        android:textAlignment="center"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -51,12 +53,11 @@
 
     <Switch
         android:id="@+id/switchCity"
-
-        android:layout_width="wrap_content"
+        android:layout_width="211dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="83dp"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="52dp"
-        android:layout_marginEnd="106dp"
+        android:layout_marginEnd="80dp"
         android:text="Search different location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
