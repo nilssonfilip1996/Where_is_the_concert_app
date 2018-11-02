@@ -4,12 +4,15 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class DetailedEvent {
 
+    DetailedEvent detailedEvent;
+
     private String name;
     private String venue;
     private String date;
     private String ticketUrl;
     private String imageUrl;
     //private LatLng latLng;
+
 
     public DetailedEvent(String name, String venue, String date, String ticketUrl, String imageUrl/*, LatLng latLng*/){
         this.name=name;

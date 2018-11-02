@@ -85,7 +85,7 @@ public class TicketMasterHandler {
      * @param eventID
      * @return Up to you guys what info you will need in your activity.
      */
-    public void getEventInfo(String eventID){
+    public void getEventInfo(BandPlayingActivity bandPlayingActivity, String eventID){
         //Do something
         String URL = rootURL + "events/" + eventID + ".json?apikey=" + tmAPIKey ;
         Log.d(TAG, "getEventInfo: URL: "+ URL);
@@ -106,6 +106,7 @@ public class TicketMasterHandler {
 //                    Log.d(TAG, "processFinish: Venue: "+venue);
 //                    Log.d(TAG, "processFinish: Date:"+date);
                     DetailedEvent event = new DetailedEvent(name, venue, date, ticketUrl, imageUrl);
+                    bandPlayingActivity.getEventDetails(event);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
