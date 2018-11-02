@@ -46,7 +46,7 @@ public class TicketMasterHandler {
      */
     public void requestAllEvents(MapActivity mapActivity, String cityName, String countryCode, String dateFrom, String dateTo){
         //String URL = rootURL + "events.json?" + "classificationName=music"+ "&city=" + cityName + "&apikey="+ tmAPIKey;
-        String dateCriteria = "&startDateTime="+dateFrom+"T00:00:00Z&endDateTime=" + dateTo + "T00:00:00Z";
+        String dateCriteria = "&startDateTime="+dateFrom+"T00:00:00Z&endDateTime=" + dateTo + "T23:59:59Z";
         String URL;
         if(countryCode.equals("")){
             URL = rootURL + "events.json?" + "classificationName=music" + dateCriteria + "&city=" + cityName + "&size=199" + "&apikey="+ tmAPIKey;
