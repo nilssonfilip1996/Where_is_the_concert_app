@@ -70,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean check = false;
     private LatLng userCoordinates = null;
     private String cityName = "";
-    private String countryCode= "";
+    private String countryCode = "";
+
 
     //Button button;
 
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         initComp();
         initStartDateClickListener();
         initEndDateClickListener();
+        initStartDate();
 
 
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     check = false;
                     Log.d(TAG, "SWICH ON!!");
                     tvCity.setText("");
-                    countryCode="";
+                    countryCode = "";
                     tvCity.setEnabled(true);
                     tvCity.setClickable(true);
                     locationManager.removeUpdates(locationListener);
@@ -122,6 +124,47 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         checkLocationsPermissions();
+    }
+
+    private void initStartDate() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        String fmonth, fday;
+        int intMonth;
+        if (month < 10 && day < 10) {
+            fmonth = "0" + month;
+            fday = "0" + day;
+            intMonth = Integer.parseInt(fmonth) + 1;
+            String paddedMonth = String.format("%02d", intMonth);
+            String date = year + "-" + paddedMonth + "-" + fday;
+            tvStartDate.setText(date);
+        } else if (day < 10) {
+
+            fday = "0" + day;
+            month = month + 1;
+            String date = year + "-" + month + "-" + fday;
+            tvStartDate.setText(date);
+
+        } else if (month < 10) {
+
+            fmonth = "0" + month;
+            intMonth = Integer.parseInt(fmonth) + 1;
+            String paddedMonth = String.format("%02d", intMonth);
+            String date = year + "-" + paddedMonth + "-" + day;
+            tvStartDate.setText(date);
+        } else {
+
+            month = month + 1;
+            String date = year + "-" + month + "-" + day;
+            tvStartDate.setText(date);
+
+
+        }
+
+
     }
 
     private void checkLocationsPermissions() {
@@ -322,29 +365,28 @@ public class MainActivity extends AppCompatActivity {
                 String endDate = tvEndDate.getText().toString();
                 String city = cityName;
 
-                if(cityName.isEmpty()){
+                if (cityName.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You must enter a city", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if((startDate.isEmpty()) || (endDate.isEmpty())){
+                if ((startDate.isEmpty()) || (endDate.isEmpty())) {
                     Toast.makeText(getApplicationContext(), "You must enter start and end date", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                SimpleDateFormat df  = new SimpleDateFormat("yyyy-MM-dd");
-                Boolean dateChecker=false;
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                Boolean dateChecker = false;
                 try {
                     Date sdate = df.parse(startDate);
                     Date edate = df.parse(endDate);
 
-                    Log.d(TAG, "DATE: " + sdate +"------" + edate);
+                    Log.d(TAG, "DATE: " + sdate + "------" + edate);
 
-                    if(sdate.before(edate)){
-                        dateChecker=true;
+                    if (sdate.before(edate)) {
+                        dateChecker = true;
 
 
-                    }
-                    else{
-                        dateChecker=false;
+                    } else {
+                        dateChecker = false;
                         Toast.makeText(getApplicationContext(), "Start date must come before end date", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -352,13 +394,11 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if(dateChecker==true){
-                   controller.searchForEventsPressed(userCoordinates, city, countryCode, startDate, endDate);
-                }
-                else{
+                if (dateChecker == true) {
+                    controller.searchForEventsPressed(userCoordinates, city, countryCode, startDate, endDate);
+                } else {
                     return;
                 }
-
 
 
             }
