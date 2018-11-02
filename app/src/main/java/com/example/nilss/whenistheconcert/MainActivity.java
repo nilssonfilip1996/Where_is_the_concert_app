@@ -150,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
                 cityNameRetriever = new CityNameRetriever();
                 cityNameRetriever.execute(location);
 
-
             }
 
             @Override
