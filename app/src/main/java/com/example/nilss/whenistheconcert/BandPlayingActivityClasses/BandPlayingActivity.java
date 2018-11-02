@@ -1,4 +1,4 @@
-package com.example.nilss.whenistheconcert;
+package com.example.nilss.whenistheconcert.BandPlayingActivityClasses;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +14,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
+
+import com.example.nilss.whenistheconcert.R;
 
 public class BandPlayingActivity extends AppCompatActivity {
     private static final String TAG = "BandPlayingActivity";

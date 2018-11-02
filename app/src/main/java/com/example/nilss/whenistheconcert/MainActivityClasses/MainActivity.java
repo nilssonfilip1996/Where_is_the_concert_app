@@ -1,13 +1,11 @@
-package com.example.nilss.whenistheconcert;
+package com.example.nilss.whenistheconcert.MainActivityClasses;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -21,26 +19,20 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.app.Dialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nilss.whenistheconcert.R;
 import com.example.nilss.whenistheconcert.Wrapper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn;
     private int start = 0;
     private boolean permissionGranted = false;
-    private boolean check = false;
+    private boolean check = true;
     private LatLng userCoordinates = null;
     private String cityName = "";
     private String countryCode= "";
@@ -313,10 +305,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!check) {
                     try {
-                        NewCityRetriever();
+                        newCityRetriever();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }
+                if(cityName==null){
+                    Toast.makeText(getApplicationContext(), "No city found with that name!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 String startDate = tvStartDate.getText().toString();
                 String endDate = tvEndDate.getText().toString();
@@ -343,6 +339,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                     }
+                    else if(sdate.equals(edate)){
+                        dateChecker=true;
+                    }
                     else{
                         dateChecker=false;
                         Toast.makeText(getApplicationContext(), "Start date must come before end date", Toast.LENGTH_SHORT).show();
@@ -353,10 +352,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if(dateChecker==true){
+                    Log.d(TAG, "onClick: blabla: " + userCoordinates);
                    controller.searchForEventsPressed(userCoordinates, city, countryCode, startDate, endDate);
-                }
-                else{
-                    return;
                 }
 
 
@@ -452,11 +449,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void NewCityRetriever() throws IOException {
+    public void newCityRetriever() throws IOException {
 
         String location = tvCity.getText().toString();
         Geocoder geo = new Geocoder(this);
         List<Address> list = geo.getFromLocationName(location, 1);
+        if(list.size()==0){
+            cityName=null;
+            return;
+        }
         Address add = list.get(0);
         String locality = add.getLocality();
         //  Toast.makeText(this, locality, Toast.LENGTH_LONG).show();
@@ -473,7 +474,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "COORDINATES GEO: " + latLog);
         Log.d(TAG, "CITY RETRIEVED BY TEXTVIEW : " + locality);
         cityName = location;
-        userCoordinates = latLog;
+        //userCoordinates = latLog;
+        userCoordinates=null;
     }
 
 

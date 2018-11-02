@@ -23,7 +23,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivityClasses.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,10 +31,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".BandPlayingActivity"></activity>
+        <activity android:name=".BandPlayingActivityClasses.BandPlayingActivity"></activity>
 
         <activity
-            android:name=".MapActivity"
+            android:name=".MapActivityClasses.MapActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 
