@@ -339,6 +339,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                     }
+                    else if(sdate.equals(edate)){
+                        dateChecker=true;
+                    }
                     else{
                         dateChecker=false;
                         Toast.makeText(getApplicationContext(), "Start date must come before end date", Toast.LENGTH_SHORT).show();
