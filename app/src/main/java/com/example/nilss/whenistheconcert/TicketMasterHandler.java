@@ -3,10 +3,10 @@ package com.example.nilss.whenistheconcert;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.nilss.whenistheconcert.MapActivityClasses.MapActivity;
 import com.example.nilss.whenistheconcert.Pojos.DetailedEvent;
 import com.example.nilss.whenistheconcert.Pojos.SimpleEvent;
 import com.google.android.gms.maps.model.LatLng;
-//import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,8 +82,7 @@ public class TicketMasterHandler {
 
     /**
      * Arnes and Zorica will be responsible for this.
-     * @param eventID
-     * @return Up to you guys what info you will need in your activity.
+     * @param eventID, The id of the chosen event.
      */
     public void getEventInfo(String eventID){
         //Do something
@@ -120,7 +119,7 @@ public class TicketMasterHandler {
     /**
      * Inner class that extends AsyncTask.
      * Used to download JSON content from a given URL.
-     * When calling .execute you'll have to pass a URL as a string aswell as what type of request it is.
+     * When calling .execute you'll have to pass a URL as a string as well as what type of request it is.
      */
     public class TMRequester extends AsyncTask<String,Void,String>{
         private AsyncResponse delegate = null;
@@ -169,7 +168,7 @@ public class TicketMasterHandler {
         @Override
         protected void onPostExecute(String s) {
             try {
-                //Request all events(Filip And Jesper).
+                //Request all events.
                 if(requestType.equals(REQUEST_TYPE_GET_EVENTS)) {
                     JSONObject jsonObject = new JSONObject(s);
                     Log.d(TAG, "onPostExecute: nbrOfEventsALALA: " + String.valueOf(jsonObject.getJSONObject("page").getInt("totalElements")));
@@ -181,12 +180,8 @@ public class TicketMasterHandler {
                     if (jsonArray != null) {
                         delegate.processFinish(jsonArray);
                     }
-                    /*for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject test = new JSONObject(jsonArray.get(i).toString());
-                        Log.d(TAG, "onPostExecute: event" + i +": " + test.getString("name") + "--" + test.getJSONObject("dates").getJSONObject("start").getString("localDate"));
-                    }*/
                 }
-                //Otherwise it is a eventInfo request!(Zorica and Arnes).
+                //Otherwise it is a eventInfo request!
                 else{
                     JSONObject jsonObject = new JSONObject(s);
                     JSONArray jsonArray = covertJsonObjectToJsonArray(jsonObject);

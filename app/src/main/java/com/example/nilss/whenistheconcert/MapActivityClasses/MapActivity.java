@@ -1,4 +1,4 @@
-package com.example.nilss.whenistheconcert;
+package com.example.nilss.whenistheconcert.MapActivityClasses;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.nilss.whenistheconcert.BandPlayingActivityClasses.BandPlayingActivity;
 import com.example.nilss.whenistheconcert.Pojos.SimpleEvent;
+import com.example.nilss.whenistheconcert.R;
+import com.example.nilss.whenistheconcert.TicketMasterHandler;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -35,9 +39,14 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         Intent intent = getIntent();
-        double latitude = Double.valueOf(intent.getStringExtra("latitude"));
-        double longitude = Double.valueOf(intent.getStringExtra("longitude"));
-        this.userLocation = new LatLng(latitude,longitude);
+        if(intent.getStringExtra("latitude").equals("") || intent.getStringExtra("longitude").equals("")){
+            this.userLocation=null;
+        }
+        else{
+            double latitude = Double.valueOf(intent.getStringExtra("latitude"));
+            double longitude = Double.valueOf(intent.getStringExtra("longitude"));
+            this.userLocation = new LatLng(latitude,longitude);
+        }
         this.cityName = intent.getStringExtra("city");
         this.countryCode = intent.getStringExtra("countryCode");
         this.startDate = intent.getStringExtra("startDate");
@@ -59,6 +68,9 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
         this.mMap = googleMap;
         TicketMasterHandler tmHandler = new TicketMasterHandler();
         tmHandler.requestAllEvents(MapActivity.this,cityName,countryCode,startDate,endDate);
+        if(userLocation!=null) {
+            addMarker(userLocation, null);
+        }
         mMap.setOnInfoWindowClickListener(this);
     }
 
@@ -97,8 +109,13 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
         Log.d(TAG, "updateEventList: pinCounter: "+ String.valueOf(pinCounter));
     }
     public void addMarker(LatLng latLng, String pinDesc){
-        mMap.addMarker(new MarkerOptions().position(latLng).title(pinDesc));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        if(pinDesc==null){
+            mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.rockstarhand)));
+        }
+        else {
+            mMap.addMarker(new MarkerOptions().position(latLng).title(pinDesc));
+        }
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
     @Override
@@ -117,6 +134,9 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
         else {
             Toast.makeText(this, marker.getTitle() + "\n" + id,
                     Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, BandPlayingActivity.class);
+            intent.putExtra("ID", id);
+            this.startActivity(intent);
         }
     }
 }

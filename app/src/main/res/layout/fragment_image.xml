@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/nick_cave_and_the_bad_seeds_early_80s"
-    tools:context=".ImageFragment"
+    tools:context=".BandPlayingActivityClasses.ImageFragment"
     android:orientation="vertical"
     android:gravity="bottom">
 

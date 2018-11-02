@@ -4,32 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BandPlayingActivity"
+    tools:context=".BandPlayingActivityClasses.BandPlayingActivity"
     android:orientation="vertical"
     >
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.example.nilss.whenistheconcert.ImageFragment"
+        android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.ImageFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
          />
 
     <fragment
         android:id="@+id/fragment2"
-        android:name="com.example.nilss.whenistheconcert.TicketsFragment"
+        android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.TicketsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <fragment
         android:id="@+id/fragment3"
-        android:name="com.example.nilss.whenistheconcert.EventDetailsFragment"
+        android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.EventDetailsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <fragment
         android:id="@+id/fragment4"
-        android:name="com.example.nilss.whenistheconcert.ArtistPreviewFragment"
+        android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.ArtistPreviewFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>
