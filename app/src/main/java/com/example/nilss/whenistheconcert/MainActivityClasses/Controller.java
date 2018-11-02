@@ -11,9 +11,6 @@ import java.util.ArrayList;
 
 public class Controller {
     private MainActivity mainActivity;
-    private MapActivity mapActivity;
-    private LatLng userLatlng;
-    private String dateIntervalSearch;
     private static final String TAG = "Controller";
 
 
@@ -23,7 +20,6 @@ public class Controller {
     }
 
     public void searchForEventsPressed(LatLng latLng, String cityName, String countryCode, String startDate, String endDate){
-        this.userLatlng = latLng;
        // this.dateIntervalSearch = dateInterval;
         Log.d(TAG, "Wrapper" + latLng + "------" + "StartDate: " + startDate + "-----" + "EndDate: " + endDate);
         //tmHandler.requestAllEvents(cityName,startDate,endDate);
