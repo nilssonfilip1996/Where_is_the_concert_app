@@ -38,10 +38,11 @@ public class TicketMasterHandler {
     private static final String IMAGE_URL = "url";
 
 
-
     /**
-     * Filip and Jesper will be responsible for this
-     * @param cityName, where to search
+     *
+     * @param mapActivity
+     * @param cityName, city to search for events within.
+     * @param countryCode, Used to only search within a certain country.
      * @param dateFrom, from?
      * @param dateTo, to?
      */
@@ -82,8 +83,9 @@ public class TicketMasterHandler {
     }
 
     /**
-     * Arnes and Zorica will be responsible for this.
-     * @param eventID, The id of the chosen event.
+     *
+     * @param bandPlayingActivity
+     * @param eventID, id of a certain event.
      */
     public void getEventInfo(BandPlayingActivity bandPlayingActivity, String eventID){
         //Do something
@@ -198,7 +200,7 @@ public class TicketMasterHandler {
         }
     }
 
-    public  JSONArray covertJsonObjectToJsonArray(Object InsideArray) {
+    private  JSONArray covertJsonObjectToJsonArray(Object InsideArray) {
 
         JSONArray jsonArray;
 
