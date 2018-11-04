@@ -279,12 +279,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    private void initEndDateClickListener() {
-
-
-    }
-
     private void initBtn() {
 
         btn.setOnClickListener(new View.OnClickListener() {

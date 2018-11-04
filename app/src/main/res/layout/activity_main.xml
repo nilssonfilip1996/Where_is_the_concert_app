@@ -6,19 +6,80 @@
     android:layout_height="match_parent"
     tools:context=".MainActivityClasses.MainActivity">
 
-    <EditText
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="75dp"
+        android:layout_marginBottom="75dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="117dp"
+            android:layout_height="47dp"
+            android:src="@drawable/icons8_metal_music_24"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/icons8_metal_music_24" />
+
+        <EditText
+            android:id="@+id/tvCurrentCity"
+            android:layout_width="211dp"
+            android:layout_height="0dp"
+            android:textSize="25sp"
+            android:textAlignment="center"
+            android:hint="enter a city"
+            android:layout_weight=".5"
+            android:drawableLeft="@drawable/ic_search_black_24dp" />
+
+        <Switch
+            android:id="@+id/switchCity"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:text="Search different location" />
+
+        <TextView
+            android:id="@+id/startDate"
+            android:layout_width="145dp"
+            android:layout_height="0dp"
+            android:layout_weight=".5"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/icons8_planner_24"
+            android:layout_gravity="center_horizontal"
+            android:hint="Select start date" />
+
+<!--        <Space
+            android:layout_width="match_parent"
+            android:layout_weight="3"
+            android:layout_height="0dp" />-->
+        <Button
+            android:id="@+id/findButton"
+            android:layout_width="183dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:background="@drawable/custombtn1"
+            android:layout_gravity="center_horizontal"
+            android:text="Find concerts"/>
+
+
+    </LinearLayout>
+
+    <!--<EditText
         android:id="@+id/tvCurrentCity"
         android:layout_width="211dp"
         android:layout_height="48dp"
         android:layout_marginStart="80dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="93dp"
+        android:layout_marginEnd="80dp"
         android:drawableLeft="@drawable/ic_search_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
-         />
 
     <Button
         android:id="@+id/findButton"
@@ -37,26 +98,27 @@
 
     <TextView
         android:id="@+id/startDate"
-        android:layout_width="122dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="120dp"
+        android:layout_width="145dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="120dp"
+        android:layout_marginEnd="80dp"
+        android:drawableLeft="@drawable/icons8_planner_24"
+        android:gravity="center"
         android:hint="Select start date"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.656"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switchCity" />
 
     <Switch
         android:id="@+id/switchCity"
-
-        android:layout_width="wrap_content"
+        android:layout_width="211dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="83dp"
+        android:layout_marginStart="120dp"
         android:layout_marginTop="52dp"
-        android:layout_marginEnd="106dp"
+        android:layout_marginEnd="60dp"
         android:text="Search different location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -75,7 +137,7 @@
         app:layout_constraintHorizontal_bias="0.358"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icons8_metal_music_24" />
+        app:srcCompat="@drawable/icons8_metal_music_24" />-->
 
 
 </android.support.constraint.ConstraintLayout>

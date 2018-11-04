@@ -8,4 +8,5 @@
     <string name="tickets">Tickets</string>
     <string name="details">Details</string>
     <string name="dummy">Dummy</string>
+    <string name="go_to_ticketmaster">Go to TicketMaster</string>
 </resources>

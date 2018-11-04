@@ -5,31 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BandPlayingActivityClasses.BandPlayingActivity"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.ImageFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-         />
+    <!--<ScrollView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content">-->
+        <fragment
+            android:id="@+id/fragmentImage"
+            android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.ImageFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <fragment
-        android:id="@+id/fragment2"
-        android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.TicketsFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <fragment
+            android:id="@+id/fragmentTickets"
+            android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.TicketsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <fragment
-        android:id="@+id/fragment3"
-        android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.EventDetailsFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <fragment
+            android:id="@+id/fragmentEventDetails"
+            android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.EventDetailsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-    <fragment
-        android:id="@+id/fragment4"
-        android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.ArtistPreviewFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <fragment
+            android:id="@+id/fragmentArtistPreview"
+            android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.ArtistPreviewFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <!--</ScrollView>-->
+
 </LinearLayout>
