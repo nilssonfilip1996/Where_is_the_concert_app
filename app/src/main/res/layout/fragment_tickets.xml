@@ -7,19 +7,20 @@
     tools:context=".BandPlayingActivityClasses.TicketsFragment"
     android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/tickets"
-        android:background="#E5E7E9"/>
+    <!--&lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:padding="10dp"-->
+        <!--android:text="@string/tickets"-->
+        <!--android:background="#E5E7E9"/>-->
 
-    <Button
-        android:id="@+id/btnToTickets"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/go_to_ticketmaster" />
+    <!--<Button-->
+        <!--android:id="@+id/btnToTickets"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/go_to_ticketmaster"-->
+        <!--android:layout_margin="20dp"/>-->
 
 
 </LinearLayout>
