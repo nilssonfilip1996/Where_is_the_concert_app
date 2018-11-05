@@ -1,38 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BandPlayingActivityClasses.BandPlayingActivity"
-    android:orientation="vertical">
+    tools:context=".BandPlayingActivityClasses.BandPlayingActivity">
 
-    <!--<ScrollView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content">-->
-        <fragment
-            android:id="@+id/fragmentImage"
-            android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.ImageFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical">
 
-        <fragment
-            android:id="@+id/fragmentTickets"
-            android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.TicketsFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+         <!--<fragment-->
+             <!--android:id="@+id/fragmentImage"-->
+             <!--android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.ImageFragment"-->
+             <!--android:layout_width="match_parent"-->
+             <!--android:layout_height="wrap_content"-->
+             <!--tools:layout="@layout/fragment_image"/>-->
 
-        <fragment
-            android:id="@+id/fragmentEventDetails"
-            android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.EventDetailsFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
-        <fragment
-            android:id="@+id/fragmentArtistPreview"
-            android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.ArtistPreviewFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    <!--</ScrollView>-->
+             <ImageView
+                 android:id="@+id/imageView"
+                 android:layout_width="480dp"
+                 android:layout_height="300dp"
+                 android:layout_alignParentStart="true"
+                 android:layout_alignParentTop="true"
+                 android:scaleType="centerCrop" />
 
-</LinearLayout>
+             <ProgressBar
+                 android:id="@+id/progressBar"
+                 style="?android:attr/progressBarStyleLarge"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerHorizontal="true"
+                 android:layout_centerVertical="true"/>
+
+             <TextView
+                 android:id="@+id/tvName"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_alignBottom="@id/imageView"
+                 android:layout_centerHorizontal="true"
+                 android:background="@color/colorPrimaryDark"
+                 android:text="@string/concert"
+                 android:textAlignment="viewEnd"
+                 android:textColor="@color/white"
+                 android:textSize="24sp" />
+         </RelativeLayout>
+
+         <!--<fragment-->
+             <!--android:id="@+id/fragmentTickets"-->
+             <!--android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.TicketsFragment"-->
+             <!--android:layout_width="match_parent"-->
+             <!--android:layout_height="wrap_content"-->
+             <!--tools:layout="@layout/fragment_tickets"/>-->
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
+
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:background="#E5E7E9"
+                 android:padding="10dp"
+                 android:text="@string/tickets"
+                 android:textSize="18sp" />
+
+             <ImageButton
+                 android:id="@+id/btnToTickets"
+                 android:layout_width="match_parent"
+                 android:layout_height="60dp"
+                 android:background="@android:color/transparent"
+                 android:scaleType="fitCenter"
+                 android:src="@drawable/tm_verified_logo"
+                 android:layout_margin="10dp"/>
+
+         </LinearLayout>
+
+         <!--<fragment-->
+             <!--android:id="@+id/fragmentEventDetails"-->
+             <!--android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.EventDetailsFragment"-->
+             <!--android:layout_width="match_parent"-->
+             <!--android:layout_height="wrap_content"-->
+             <!--tools:layout="@layout/fragment_event_details"/>-->
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
+
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:background="@color/grey"
+                 android:padding="10dp"
+                 android:text="@string/details"
+                 android:textSize="18sp" />
+
+             <TextView
+                 android:id="@+id/tvDate"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:drawableStart="@drawable/ic_date"
+                 android:drawablePadding="10dp"
+                 android:padding="10dp"
+                 android:text="@string/dummy"
+                 android:textSize="16sp" />
+
+             <TextView
+                 android:id="@+id/tvVenue"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:drawableStart="@drawable/ic_place"
+                 android:drawablePadding="10dp"
+                 android:padding="10dp"
+                 android:text="@string/dummy"
+                 android:textSize="16sp" />
+         </LinearLayout>
+
+         <fragment
+             android:id="@+id/fragmentArtistPreview"
+             android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.ArtistPreviewFragment"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             tools:layout="@layout/fragment_artist_preview"/>
+     </LinearLayout>
+
+</ScrollView>

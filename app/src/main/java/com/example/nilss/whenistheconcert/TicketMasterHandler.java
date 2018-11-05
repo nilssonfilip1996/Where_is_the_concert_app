@@ -102,11 +102,11 @@ public class TicketMasterHandler {
                     String imageUrl = temp.getJSONArray("images").getJSONObject(0).getString(IMAGE_URL);
                     String venue = temp.getJSONObject("_embedded").getJSONArray("venues").getJSONObject(0).getString(NAME_KEY);
                     String date = temp.getJSONObject("dates").getJSONObject("start").getString("localDate");
-//                    Log.d(TAG, "processFinish: Name: "+name);
-//                    Log.d(TAG, "processFinish: ticket: "+ticketUrl);
-//                    Log.d(TAG, "processFinish: image:"+imageUrl);
-//                    Log.d(TAG, "processFinish: Venue: "+venue);
-//                    Log.d(TAG, "processFinish: Date:"+date);
+                    Log.d(TAG, "processFinish: Name: "+name);
+                    Log.d(TAG, "processFinish: ticket: "+ticketUrl);
+                    Log.d(TAG, "processFinish: image:"+imageUrl);
+                    Log.d(TAG, "processFinish: Venue: "+venue);
+                    Log.d(TAG, "processFinish: Date:"+date);
                     DetailedEvent event = new DetailedEvent(name, venue, date, ticketUrl, imageUrl);
                     bandPlayingActivity.getEventDetails(event);
 
