@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#99C7C6"
+    android:background="#dcf2f1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivityClasses.MainActivity">
@@ -21,12 +21,12 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="117dp"
-            android:layout_height="47dp"
+            android:layout_width="135dp"
+            android:layout_height="65dp"
             android:paddingBottom="10dp"
             android:src="@drawable/icons8_metal_music_24"
-            android:layout_gravity="center_horizontal"
-            app:srcCompat="@drawable/icons8_metal_music_24" />
+            android:tint="@color/colorPrimaryDark"
+            android:layout_gravity="center_horizontal"/>
 
         <EditText
             android:id="@+id/tvCurrentCity"
@@ -43,23 +43,29 @@
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:paddingBottom="10dp"
-            android:text="Search different location" />
+            android:text="Search different location"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/startDate"
             android:layout_width="189dp"
             android:layout_height="32dp"
-            android:paddingLeft="40dp"
             android:layout_gravity="center_horizontal"
             android:drawableLeft="@drawable/icons8_planner_24"
+            android:drawablePadding="7dp"
             android:gravity="center_vertical"
             android:hint="Select start date"
-             />
+            android:textColorHint="@android:color/black"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_weight="3"
             android:layout_height="0dp" />-->
+
         <Button
             android:id="@+id/findButton"
             android:layout_width="200dp"
