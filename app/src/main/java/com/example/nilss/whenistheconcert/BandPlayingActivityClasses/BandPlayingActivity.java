@@ -23,6 +23,7 @@ public class BandPlayingActivity extends AppCompatActivity {
     View fragmentImage, fragmentTickets, fragmentEventDetails, fragmentArtistPreview;
     private static final String TAG = "BandPlayingActivity";
     public DetailedEvent detailedEvent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +31,11 @@ public class BandPlayingActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("ID");
-        Log.d(TAG, "onCreate: ID: "+ id);
+        Log.d(TAG, "onCreate: ID: " + id);
 
 
         TicketMasterHandler tmHandler = new TicketMasterHandler();
-        tmHandler.getEventInfo(this,id);
+        tmHandler.getEventInfo(this, id);
 
         initComponents();
     }
@@ -46,9 +47,9 @@ public class BandPlayingActivity extends AppCompatActivity {
         fragmentTickets = (View) findViewById(R.id.fragmentTickets);
     }
 
-    public void getEventDetails(DetailedEvent detailedEvent){
+    public void getEventDetails(DetailedEvent detailedEvent) {
         this.detailedEvent = detailedEvent;
-        Log.d(TAG, "getEventDetails: Name: "+ this.detailedEvent.getName());
+        Log.d(TAG, "getEventDetails: Name: " + this.detailedEvent.getName());
 
     }
 }
