@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/linearLayoutwithImg"
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/nick_cave_and_the_bad_seeds_early_80s"
-    tools:context=".BandPlayingActivityClasses.ImageFragment"
-    android:orientation="vertical"
-    android:gravity="bottom"
-    android:layout_margin="25dp">
+    tools:context=".BandPlayingActivityClasses.ImageFragment">
 
+    <!--<ImageView-->
+        <!--android:id="@+id/imageView"-->
+        <!--android:layout_width="480dp"-->
+        <!--android:layout_height="320dp"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:src="@drawable/nick_cave_and_the_bad_seeds_early_80s" />-->
 
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="437dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:text="@string/concert"
-        android:textColor="@color/white"/>
-</LinearLayout>
+    <!--<TextView-->
+        <!--android:id="@+id/tvName"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBottom="@id/imageView"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:background="@color/colorPrimaryDark"-->
+        <!--android:text="@string/concert"-->
+        <!--android:textAlignment="viewEnd"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="18sp" />-->
+</RelativeLayout>

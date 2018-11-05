@@ -7,33 +7,30 @@
     tools:context=".BandPlayingActivityClasses.EventDetailsFragment"
     android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/details"
-        android:background="@color/grey"/>
+    <!--&lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:padding="10dp"-->
+        <!--android:text="@string/details"-->
+        <!--android:background="@color/grey"/>-->
 
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:drawableStart="@drawable/ic_date"
-        android:padding="10dp"
-        android:text="@string/dummy" />
+    <!--<TextView-->
+        <!--android:id="@+id/tvDate"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:drawableStart="@drawable/ic_date"-->
+        <!--android:padding="10dp"-->
+        <!--android:text="@string/dummy" />-->
 
-    <TextView
-        android:id="@+id/tvVenue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:drawableStart="@drawable/ic_place"
-        android:padding="10dp"
-        android:text="@string/dummy" />
-
-
-
+    <!--<TextView-->
+        <!--android:id="@+id/tvVenue"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:drawableStart="@drawable/ic_place"-->
+        <!--android:padding="10dp"-->
+        <!--android:text="@string/dummy" />-->
 
 </LinearLayout>
