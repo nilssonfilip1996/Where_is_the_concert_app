@@ -12,12 +12,6 @@
          android:layout_height="wrap_content"
          android:orientation="vertical">
 
-         <!--<fragment-->
-             <!--android:id="@+id/fragmentImage"-->
-             <!--android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.ImageFragment"-->
-             <!--android:layout_width="match_parent"-->
-             <!--android:layout_height="wrap_content"-->
-             <!--tools:layout="@layout/fragment_image"/>-->
 
          <RelativeLayout
              android:layout_width="match_parent"
@@ -52,12 +46,6 @@
                  android:textSize="24sp" />
          </RelativeLayout>
 
-         <!--<fragment-->
-             <!--android:id="@+id/fragmentTickets"-->
-             <!--android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.TicketsFragment"-->
-             <!--android:layout_width="match_parent"-->
-             <!--android:layout_height="wrap_content"-->
-             <!--tools:layout="@layout/fragment_tickets"/>-->
 
          <LinearLayout
              android:layout_width="match_parent"
@@ -82,13 +70,6 @@
                  android:layout_margin="10dp"/>
 
          </LinearLayout>
-
-         <!--<fragment-->
-             <!--android:id="@+id/fragmentEventDetails"-->
-             <!--android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.EventDetailsFragment"-->
-             <!--android:layout_width="match_parent"-->
-             <!--android:layout_height="wrap_content"-->
-             <!--tools:layout="@layout/fragment_event_details"/>-->
 
          <LinearLayout
              android:layout_width="match_parent"
@@ -126,12 +107,7 @@
                  android:textSize="16sp" />
          </LinearLayout>
 
-         <fragment
-             android:id="@+id/fragmentArtistPreview"
-             android:name="com.example.nilss.whenistheconcert.BandPlayingActivityClasses.ArtistPreviewFragment"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             tools:layout="@layout/fragment_artist_preview"/>
+
      </LinearLayout>
 
 </ScrollView>

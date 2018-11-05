@@ -26,8 +26,6 @@ import com.example.nilss.whenistheconcert.R;
 
 public class BandPlayingActivity extends AppCompatActivity {
 
-    View /*fragmentImage, fragmentTickets, fragmentEventDetails,*/ fragmentArtistPreview;
-
     private static final String TAG = "BandPlayingActivity";
 
     public DetailedEvent detailedEvent;
@@ -57,7 +55,6 @@ public class BandPlayingActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
-        fragmentArtistPreview = (View) findViewById(R.id.fragmentArtistPreview);
 
         imageView = (ImageView) findViewById(R.id.imageView);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
