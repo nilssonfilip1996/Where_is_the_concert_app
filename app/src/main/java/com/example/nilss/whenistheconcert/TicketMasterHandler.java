@@ -201,9 +201,7 @@ public class TicketMasterHandler {
     }
 
     private  JSONArray covertJsonObjectToJsonArray(Object InsideArray) {
-
         JSONArray jsonArray;
-
         if (InsideArray instanceof JSONArray) {
             jsonArray = (JSONArray) InsideArray;
         } else {
