@@ -132,8 +132,6 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnInfoWi
                     Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(this, marker.getTitle() + "\n" + id,
-                    Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, BandPlayingActivity.class);
             intent.putExtra("ID", id);
             this.startActivity(intent);
